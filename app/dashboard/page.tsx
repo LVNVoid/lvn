@@ -1,22 +1,12 @@
-import { getGitHubStats, getRecentActivity } from '@/lib/github';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { getRecentActivity } from '@/lib/github';
 import { SlideUp, StaggerContainer } from '@/components/ui/animated';
-import {
-  Github,
-  Folder,
-  UserCheck,
-  Activity,
-  Star,
-  Users,
-  GitCommit,
-} from 'lucide-react';
+import { Activity, GithubIcon, HistoryIcon } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
 import { GitHubCalendarWrapper } from '@/components/github-calendar';
 import { PageHeader } from '@/components/ui/page-header';
 import { LayoutDashboard } from 'lucide-react';
 
 export default async function DashboardPage() {
-  const stats = await getGitHubStats();
   const activity = await getRecentActivity();
 
   return (
@@ -27,7 +17,12 @@ export default async function DashboardPage() {
         icon={LayoutDashboard}
       />
       <SlideUp delay={0.1}>
-        <h2 className="text-xl font-bold tracking-tight mb-4">GitHub Stats</h2>
+        <div className="flex item-center space-x-2">
+          <GithubIcon className="h-6 w-6 text-primary shrink-0" />
+          <h2 className="text-xl font-bold tracking-tight mb-4">
+            GitHub Stats
+          </h2>
+        </div>
       </SlideUp>
 
       <SlideUp delay={0.2}>
@@ -35,9 +30,12 @@ export default async function DashboardPage() {
       </SlideUp>
 
       <SlideUp delay={0.3}>
-        <h2 className="text-xl font-bold tracking-tight mb-4">
-          Recent Activity
-        </h2>
+        <div className="flex item-center space-x-2">
+          <HistoryIcon className="h-6 w-6 text-primary shrink-0" />
+          <h2 className="text-xl font-bold tracking-tight mb-4">
+            Recent Activity
+          </h2>
+        </div>
       </SlideUp>
       <SlideUp delay={0.4}>
         <StaggerContainer className="space-y-4">

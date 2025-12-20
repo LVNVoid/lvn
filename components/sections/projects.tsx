@@ -1,59 +1,66 @@
-"use client";
+'use client';
 
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { SlideUp, StaggerContainer, staggerItem } from "@/components/ui/animated";
-import { Github, ExternalLink } from "lucide-react";
-import Link from "next/link";
-import { projects } from "@/data/mock";
-import { motion } from "framer-motion";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { StaggerContainer, staggerItem } from '@/components/ui/animated';
+import { Github, ExternalLink } from 'lucide-react';
+import Link from 'next/link';
+import { projects } from '@/data/mock';
+import { motion } from 'framer-motion';
 
 interface ProjectsProps {
-    limit?: number;
-    className?: string;
+  limit?: number;
+  className?: string;
 }
 
 export function Projects({ limit, className }: ProjectsProps) {
-    const displayedProjects = limit ? projects.slice(0, limit) : projects;
+  const displayedProjects = limit ? projects.slice(0, limit) : projects;
 
-    return (
-        <section className={className}>
-            <StaggerContainer className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {displayedProjects.map((project, index) => (
-                    <motion.div key={index} variants={staggerItem}>
-                        <Card className="h-full flex flex-col justify-between overflow-hidden border-muted-foreground/10 bg-card/50 backdrop-blur-sm transition-all hover:border-primary/50 hover:shadow-lg">
-                            <CardHeader>
-                                <CardTitle>{project.title}</CardTitle>
-                                <CardDescription className="mt-2 line-clamp-3">
-                                    {project.description}
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="flex flex-wrap gap-2">
-                                    {project.tech.map((tech) => (
-                                        <Badge key={tech} variant="secondary">
-                                            {tech}
-                                        </Badge>
-                                    ))}
-                                </div>
-                            </CardContent>
-                            <CardFooter className="flex gap-4">
-                                <Button variant="outline" size="sm" asChild className="w-full">
-                                    <Link href={project.github} target="_blank">
-                                        <Github className="mr-2 h-4 w-4" /> Code
-                                    </Link>
-                                </Button>
-                                <Button size="sm" asChild className="w-full">
-                                    <Link href={project.link} target="_blank">
-                                        <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
-                                    </Link>
-                                </Button>
-                            </CardFooter>
-                        </Card>
-                    </motion.div>
-                ))}
-            </StaggerContainer>
-        </section>
-    );
+  return (
+    <section className={className}>
+      <StaggerContainer className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {displayedProjects.map((project, index) => (
+          <motion.div key={index} variants={staggerItem}>
+            <Card className="h-full flex flex-col justify-between overflow-hidden border-muted-foreground/10 bg-card/50 backdrop-blur-sm transition-all hover:border-primary/50 hover:shadow-lg">
+              <CardHeader>
+                <CardTitle className="text-lg">{project.title}</CardTitle>
+                <CardDescription className="mt-2 text-base line-clamp-3">
+                  {project.description}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex flex-wrap gap-2">
+                  {project.tech.map((tech) => (
+                    <Badge key={tech} variant="secondary">
+                      {tech}
+                    </Badge>
+                  ))}
+                </div>
+              </CardContent>
+              <CardFooter className="flex gap-4">
+                <Button variant="outline" size="sm" asChild className="w-full">
+                  <Link href={project.github} target="_blank">
+                    <Github className="mr-2 h-4 w-4" /> Code
+                  </Link>
+                </Button>
+                <Button size="sm" asChild className="w-full">
+                  <Link href={project.link} target="_blank">
+                    <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
+                  </Link>
+                </Button>
+              </CardFooter>
+            </Card>
+          </motion.div>
+        ))}
+      </StaggerContainer>
+    </section>
+  );
 }
