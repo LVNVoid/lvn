@@ -4,9 +4,10 @@ import { Projects } from "@/components/sections/projects";
 import { SlideUp } from "@/components/ui/animated";
 import TextType from "@/components/ui/text-type";
 import { profile } from "@/data/mock";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Download } from "lucide-react";
+import { motion } from "framer-motion";
 import LogoLoop from "@/components/ui/logo-loop";
 import {
   SiReact,
@@ -48,16 +49,28 @@ export default function HomePage() {
       {/* Intro Section */}
       <section className="space-y-6">
         <SlideUp>
-          <h1 className="text-3xl font-bold tracking-tight lg:text-4xl flex flex-wrap gap-2 items-center">
-            <span>Hi, I&apos;m</span>
-            <TextType
-              text={[profile.name, 'Software Engineer']}
-              typingSpeed={75}
-              pauseDuration={1500}
-              showCursor={true}
-              cursorCharacter="|"
-            />
-          </h1>
+          <div className="flex flex justify-between items-center">
+            <h1 className="text-3xl font-bold tracking-tight lg:text-4xl flex flex-wrap gap-2 items-center">
+              <span>Hi, I&apos;m</span>
+              <TextType
+                text={[profile.name, 'Software Engineer']}
+                typingSpeed={75}
+                pauseDuration={1500}
+                showCursor={true}
+                cursorCharacter="|"
+              />
+            </h1>
+            <motion.a
+              href="/cv.pdf"
+              download="CV_Elvien.pdf"
+              className={buttonVariants({ className: "gap-2 select-none" })}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              Download CV <Download className="h-4 w-4" />
+            </motion.a>
+          </div>
+
           <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
             <span className="flex items-center gap-1">• Based in {profile.location} <span className="text-xs border px-1 rounded">ID</span></span>
             <span className="flex items-center gap-1">• <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" /> Hire me</span>

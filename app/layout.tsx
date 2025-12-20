@@ -5,6 +5,7 @@ import { LayoutWrapper } from "@/components/layout/layout-wrapper";
 import "./globals.css";
 import NextTopLoader from 'nextjs-toploader';
 import { AnimatedBackground } from "@/components/ui/animated-background";
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -36,6 +37,7 @@ export default function RootLayout({
           <AnimatedBackground />
           <LayoutWrapper>
             {children}
+            <SpeedInsights />
           </LayoutWrapper>
         </ThemeProvider>
       </body>
