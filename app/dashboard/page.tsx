@@ -3,7 +3,7 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { SlideUp, StaggerContainer } from "@/components/ui/animated";
 import { Github, Folder, UserCheck, Activity, Star, Users, GitCommit } from "lucide-react";
 import { formatDate } from "@/lib/utils";
-import { GitHubCalendar } from 'react-github-calendar';
+import { GitHubCalendarWrapper } from "@/components/github-calendar";
 import { PageHeader } from "@/components/ui/page-header";
 import { LayoutDashboard } from "lucide-react";
 
@@ -23,7 +23,7 @@ export default async function DashboardPage() {
             </SlideUp>
 
             <SlideUp delay={0.2}>
-                <GitHubCalendar username="LVNVoid" />
+                <GitHubCalendarWrapper username="LVNVoid" />
             </SlideUp>
 
             <SlideUp delay={0.3}>
