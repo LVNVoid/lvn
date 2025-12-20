@@ -7,11 +7,11 @@ import { education } from "@/data/mock";
 export function Education() {
     return (
         <section className=" py-6">
-            <div className="grid gap-6 md:grid-cols-2">
+            <div className="grid gap-4 md:gap-6 md:grid-cols-2">
                 <div className="space-y-6">
                     {education.map((edu, index) => (
                         <SlideUp key={index} delay={index * 0.1}>
-                            <Card className="bg-background/70 backdrop-blur-sm">
+                            <Card className="bg-background/70 backdrop-blur-sm border-muted">
                                 <CardHeader>
                                     <div className="flex justify-between items-start">
                                         <div>

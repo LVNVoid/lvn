@@ -10,7 +10,7 @@ import Link from "next/link";
 
 export default function Certificates() {
     return (
-        <div className="grid gap-6 md:grid-cols-2">
+        <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
             {certificates.map((cert, index) => (
                 <SlideUp key={index} delay={0.2 + index * 0.1}>
                     <Card className="overflow-hidden h-full flex flex-col bg-background/60 backdrop-blur-sm transition-all border-transparent hover:border-primary/50 hover:shadow-md group">

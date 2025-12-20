@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { LayoutWrapper } from "@/components/layout/layout-wrapper";
-import { AnimatedBackground } from "@/components/ui/animated-background";
 import "./globals.css";
 import NextTopLoader from 'nextjs-toploader';
+import { AnimatedBackground } from "@/components/ui/animated-background";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -24,13 +24,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.className} ${inter.variable} font-sans antialiased min-h-screen max-w-7xl mx-auto w-full flex flex-col overflow-x-hidden`}
+        className={`${inter.className} ${inter.variable} font-sans antialiased min-h-screen`}
       >
         <NextTopLoader color="#0a8a9bff" height={3} />
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
+          defaultTheme="dark"
+          enableSystem={false}
           disableTransitionOnChange
         >
           <AnimatedBackground />

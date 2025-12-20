@@ -1,7 +1,7 @@
 "use client";
 
-import { motion, useInView, UseInViewOptions } from "framer-motion";
-import { useRef, ReactNode } from "react";
+import { motion } from "framer-motion";
+import { ReactNode } from "react";
 
 interface AnimatedWrapperProps {
     children: ReactNode;

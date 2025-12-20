@@ -5,11 +5,11 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { Home, User, Award, FolderOpen, LayoutDashboard, Mail, Sparkles, MessageCircle, Copyright } from "lucide-react";
+import { Home, User, Award, FolderOpen, LayoutDashboard, Mail, MessageCircle, Copyright } from "lucide-react";
 import { profile } from "@/data/mock";
+import SwitchThemeDialog from "../ui/switch-theme-dialog";
 
-const navItems = [
+export const navItems = [
     { name: "Home", href: "/", icon: Home },
     { name: "About", href: "/about", icon: User },
     { name: "Certificates", href: "/certificates", icon: Award },
@@ -43,14 +43,15 @@ export function Sidebar({ className, onNavigate }: SidebarProps) {
                 </div>
                 <div>
                     <h2 className="text-xl font-bold flex items-center justify-center gap-1">
-                        {profile.name} <span className="text-blue-500 text-sm">✓</span>
+                        {profile.name} <Image src="/icons/verified-logo.svg" alt="Verified" width={20} height={20} />
                     </h2>
                     <p className="text-xs text-muted-foreground">@{profile.name.toLowerCase().replace(/\s/g, "")}</p>
                 </div>
 
                 <div className="flex gap-2">
                     <div className="flex gap-2 items-center">
-                        <ThemeToggle />
+                        {/* <ThemeToggle /> */}
+                        <SwitchThemeDialog />
                     </div>
                 </div>
             </div>

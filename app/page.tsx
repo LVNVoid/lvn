@@ -1,9 +1,46 @@
 'use client'
 
-import Skills from "@/components/sections/skills";
+import { Projects } from "@/components/sections/projects";
 import { SlideUp } from "@/components/ui/animated";
-import RotatingText from "@/components/ui/rotating-text";
+import TextType from "@/components/ui/text-type";
 import { profile } from "@/data/mock";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
+import LogoLoop from "@/components/ui/logo-loop";
+import {
+  SiReact,
+  SiNextdotjs,
+  SiTypescript,
+  SiTailwindcss,
+  SiPrisma,
+  SiSupabase,
+  SiPostgresql,
+  SiExpress,
+  SiNodedotjs,
+  SiPostman,
+  SiVite,
+  SiVercel,
+  SiGithub,
+} from "react-icons/si";
+
+
+const techLogos = [
+  { node: <SiReact className="transition-colors duration-300 text-[#61DAFB]" />, title: "React", href: "https://react.dev" },
+  { node: <SiNextdotjs className="transition-colors duration-300 text-foreground" />, title: "Next.js", href: "https://nextjs.org" },
+  { node: <SiTypescript className="transition-colors duration-300 text-[#3178C6]" />, title: "TypeScript", href: "https://www.typescriptlang.org" },
+  { node: <SiTailwindcss className="transition-colors duration-300 text-[#06B6D4]" />, title: "Tailwind CSS", href: "https://tailwindcss.com" },
+  { node: <SiPrisma className="transition-colors duration-300 text-[#52b7af]" />, title: "Prisma", href: "https://www.prisma.io" },
+  { node: <SiSupabase className="transition-colors duration-300 text-[#3ECF8E]" />, title: "Supabase", href: "https://supabase.com" },
+  { node: <SiPostgresql className="transition-colors duration-300 text-[#4169E1]" />, title: "PostgreSQL", href: "https://www.postgresql.org" },
+  { node: <SiExpress className="transition-colors duration-300 text-foreground" />, title: "Express.js", href: "https://expressjs.com" },
+  { node: <SiNodedotjs className="transition-colors duration-300 text-[#339933]" />, title: "Node.js", href: "https://nodejs.org" },
+  { node: <SiPostman className="transition-colors duration-300 text-[#FF6C37]" />, title: "Postman", href: "https://www.postman.com" },
+  { node: <SiVite className="transition-colors duration-300 text-[#646CFF]" />, title: "Vite", href: "https://vitejs.dev" },
+  { node: <SiVercel className="transition-colors duration-300 text-foreground" />, title: "Vercel", href: "https://vercel.com" },
+  { node: <SiGithub className="transition-colors duration-300 text-foreground" />, title: "GitHub", href: "https://github.com" },
+];
+
 
 export default function HomePage() {
   return (
@@ -13,31 +50,26 @@ export default function HomePage() {
         <SlideUp>
           <h1 className="text-3xl font-bold tracking-tight lg:text-4xl flex flex-wrap gap-2 items-center">
             <span>Hi, I&apos;m</span>
-            <RotatingText
-              texts={[profile.name, 'Software Engineer', 'Fullstack Developer']}
-              mainClassName="px-2 sm:px-2 md:px-3 bg-teal-500 text-black overflow-hidden py-0.5 sm:py-1 md:py-2 justify-center rounded-lg"
-              staggerFrom={"last"}
-              initial={{ y: "100%" }}
-              animate={{ y: 0 }}
-              exit={{ y: "-120%" }}
-              staggerDuration={0.025}
-              splitLevelClassName="overflow-hidden pb-0.5 sm:pb-1 md:pb-1"
-              transition={{ type: "spring", damping: 30, stiffness: 400 }}
-              rotationInterval={2000}
+            <TextType
+              text={[profile.name, 'Software Engineer']}
+              typingSpeed={75}
+              pauseDuration={1500}
+              showCursor={true}
+              cursorCharacter="|"
             />
           </h1>
           <div className="flex items-center gap-2 text-sm text-muted-foreground mt-2">
             <span className="flex items-center gap-1">• Based in {profile.location} <span className="text-xs border px-1 rounded">ID</span></span>
-            <span className="flex items-center gap-1">• <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" /> Onsite</span>
+            <span className="flex items-center gap-1">• <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" /> Hire me</span>
           </div>
         </SlideUp>
 
         <SlideUp delay={0.1}>
-          <p className="text-muted-foreground leading-relaxed max-w-2xl text-base">
-            Experienced and passionate Fullstack Developer specializing in building scalable and efficient digital solutions.
-            On the frontend, I work with Next.js, TypeScript, and Tailwind CSS.
-            On the backend, I develop robust services using Golang.
-            Collaborative, detail-oriented, and committed to high-performance applications.
+          <p className="text-muted-foreground leading-relaxed max-w-3xl text-base">
+            I&rsquo;m a passionate and detail-oriented Informatics Engineering graduate based in Jakarta, Indonesia,
+            specializing in JavaScript and modern frontend frameworks. I enjoy building clean, responsive, and user-focused web interfaces
+            while continuously exploring new technologies. As a fast learner with strong adaptability, I thrive in collaborative
+            environments and strive to contribute meaningful impact to every development team I join.
           </p>
         </SlideUp>
       </section>
@@ -45,9 +77,80 @@ export default function HomePage() {
       <div className="w-full h-[1px] bg-border/50" />
 
       {/* Skills Section */}
-      <Skills />
+      <section className="space-y-6">
+        <SlideUp delay={0.2}>
+          <h2 className="text-2xl font-bold tracking-tight">My Tech Stack</h2>
+        </SlideUp>
+        <SlideUp delay={0.3}>
+          <div className="space-y-6">
+            <LogoLoop
+              logos={techLogos}
+              speed={40}
+              direction="left"
+              logoHeight={30}
+              gap={60}
+              hoverSpeed={0}
+              scaleOnHover
+              fadeOut
+              fadeOutColor="bg-primary"
+              ariaLabel="Tech Stack"
+            />
+            <LogoLoop
+              logos={techLogos}
+              speed={40}
+              direction="right"
+              logoHeight={30}
+              gap={60}
+              hoverSpeed={0}
+              scaleOnHover
+              fadeOut
+              fadeOutColor="bg-primary"
+              ariaLabel="Tech Stack"
+            />
+          </div>
+        </SlideUp>
+      </section>
 
       <div className="w-full h-[1px] bg-border/50" />
+
+      {/* Featured Projects Section */}
+      <section className="space-y-6">
+        <div className="flex items-center justify-between">
+          <SlideUp delay={0.4}>
+            <h2 className="text-2xl font-bold tracking-tight">Featured Projects</h2>
+          </SlideUp>
+          <SlideUp delay={0.4}>
+            <Button variant="ghost" className="gap-2 group" asChild>
+              <Link href="/projects">
+                View All <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </Button>
+          </SlideUp>
+        </div>
+        <SlideUp delay={0.5}>
+          <Projects limit={3} />
+        </SlideUp>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-12 relative rounded-2xl overflow-hidden bg-primary/5 border border-primary/10">
+        <div className="absolute inset-0 bg-gradient-to-r from-primary/10 to-transparent opacity-50" />
+        <div className="relative z-10 flex flex-col items-center justify-center text-center gap-6 p-6">
+          <SlideUp delay={0.6}>
+            <h2 className="text-3xl font-bold">Ready to work together?</h2>
+            <p className="text-muted-foreground mt-2 max-w-lg mx-auto">
+              I&apos;m always open to discussing product design work or partnership opportunities.
+            </p>
+          </SlideUp>
+          <SlideUp delay={0.7}>
+            <Button size="lg" className="gap-2" asChild>
+              <Link href="/contact">
+                Get in touch <ArrowRight className="h-4 w-4" />
+              </Link>
+            </Button>
+          </SlideUp>
+        </div>
+      </section>
     </div>
   );
 }

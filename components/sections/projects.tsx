@@ -9,12 +9,18 @@ import Link from "next/link";
 import { projects } from "@/data/mock";
 import { motion } from "framer-motion";
 
-export function Projects() {
-    return (
-        <section >
+interface ProjectsProps {
+    limit?: number;
+    className?: string;
+}
 
+export function Projects({ limit, className }: ProjectsProps) {
+    const displayedProjects = limit ? projects.slice(0, limit) : projects;
+
+    return (
+        <section className={className}>
             <StaggerContainer className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-                {projects.map((project, index) => (
+                {displayedProjects.map((project, index) => (
                     <motion.div key={index} variants={staggerItem}>
                         <Card className="h-full flex flex-col justify-between overflow-hidden border-muted-foreground/10 bg-card/50 backdrop-blur-sm transition-all hover:border-primary/50 hover:shadow-lg">
                             <CardHeader>

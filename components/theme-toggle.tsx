@@ -1,26 +1,21 @@
 "use client";
 
-import * as React from "react";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { useMounted } from "@/hooks/useMounted";
 
 export function ThemeToggle() {
-    const [mounted, setMounted] = React.useState(false);
     const { setTheme, theme } = useTheme();
 
-    React.useEffect(() => {
-        setMounted(true);
-    }, []);
+    const mounted = useMounted();
 
-    if (!mounted) {
-        return (
-            <Button variant="ghost" size="icon" className="group relative">
-                <span className="sr-only">Toggle theme</span>
-            </Button>
-        );
-    }
+    if (!mounted) return (
+        <Button variant="ghost" size="icon" className="group relative">
+            <span className="sr-only">Toggle theme</span>
+        </Button>
+    );
 
     return (
         <Button

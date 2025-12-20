@@ -1,91 +1,72 @@
 "use client";
 
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
-import { ThemeToggle } from "@/components/theme-toggle";
-import { Menu, X } from "lucide-react";
-import { useState } from "react";
 import { Button } from "@/components/ui/button";
+import { profile } from "@/data/mock";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import Link from "next/link";
 
-const navItems = [
-    { name: "Home", href: "/" },
-    { name: "Projects", href: "/#projects" },
-    { name: "Dashboard", href: "/dashboard" },
-    { name: "Contact", href: "/contact" },
-];
+interface NavbarProps {
+    isOpen: boolean;
+    onToggle: () => void;
+}
 
-export function Navbar() {
-    const pathname = usePathname();
-    const [isOpen, setIsOpen] = useState(false);
-
+export function Navbar({ isOpen, onToggle }: NavbarProps) {
     return (
-        <header className="sticky top-0 z-50 w-full border-b">
-            <div className="container flex h-16 items-center justify-between">
-                <Link href="/" className="mr-6 flex items-center space-x-2">
-                    <span className="text-xl font-medium">Elvien</span>
-                </Link>
-                <div className="hidden md:flex gap-6 items-center">
-                    <nav className="flex items-center gap-6">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                className={cn(
-                                    "text-base font-medium transition-colors hover:text-primary",
-                                    pathname === item.href
-                                        ? "text-foreground"
-                                        : "text-muted-foreground"
-                                )}
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
-                    </nav>
-                    <ThemeToggle />
+        <div className="lg:hidden fixed top-0 left-0 right-0 h-16 border-b border-border/40 bg-gradient-to-r from-background/80 to-background/40 backdrop-blur-xl z-50 flex items-center px-4 justify-between">
+            <Link href="/" className="mr-6 flex items-center space-x-2">
+                <div className="relative w-10 h-10 rounded-full overflow-hidden border-1 border-gray-500">
+                    <Image
+                        src={profile.avatar || "/placeholder.png"}
+                        alt={profile.name}
+                        width={200}
+                        height={200}
+                        className="object-cover"
+                    />
                 </div>
 
-                {/* Mobile Menu */}
-                <div className="flex items-center lg:hidden gap-2">
-                    <ThemeToggle />
-                    <Button
-                        variant="ghost"
-                        size="icon"
-                        onClick={() => setIsOpen(!isOpen)}
-                    >
-                        {isOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-                    </Button>
-                </div>
-            </div>
+                <h2 className="text-lg font-bold flex items-center gap-1">
+                    {profile.name}
+                    <Image
+                        src="/icons/verified-logo.svg"
+                        alt="Verified"
+                        width={20}
+                        height={20}
+                    />
+                </h2>
+            </Link>
 
-            {/* Mobile Nav Dropdown */}
-            {isOpen && (
+            <Button
+                variant="ghost"
+                size="icon"
+                onClick={onToggle}
+                className="relative h-10 w-10 overflow-hidden hover:bg-muted"
+                aria-label="Toggle Menu"
+            >
                 <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="md:hidden border-b bg-background"
-                >
-                    <div className="container py-4 flex flex-col gap-4">
-                        {navItems.map((item) => (
-                            <Link
-                                key={item.href}
-                                href={item.href}
-                                onClick={() => setIsOpen(false)}
-                                className={cn(
-                                    "text-sm font-medium transition-colors hover:text-primary",
-                                    pathname === item.href
-                                        ? "text-foreground"
-                                        : "text-muted-foreground"
-                                )}
-                            >
-                                {item.name}
-                            </Link>
-                        ))}
-                    </div>
-                </motion.div>
-            )}
-        </header>
+                    className="absolute h-1 w-6 bg-foreground rounded-full"
+                    animate={{
+                        rotate: isOpen ? 45 : 0,
+                        y: isOpen ? 0 : -8,
+                    }}
+                    transition={{ duration: 0.2 }}
+                />
+                <motion.div
+                    className="absolute h-1 w-6 bg-foreground rounded-full"
+                    animate={{
+                        opacity: isOpen ? 0 : 1,
+                    }}
+                    transition={{ duration: 0.2 }}
+                />
+                <motion.div
+                    className="absolute h-1 w-6 bg-foreground rounded-full"
+                    animate={{
+                        rotate: isOpen ? -45 : 0,
+                        y: isOpen ? 0 : 8,
+                    }}
+                    transition={{ duration: 0.2 }}
+                />
+            </Button>
+        </div>
     );
 }
