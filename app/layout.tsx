@@ -1,12 +1,11 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
-import { LayoutWrapper } from "@/components/layout/layout-wrapper";
 import "./globals.css";
 import NextTopLoader from 'nextjs-toploader';
-import { AnimatedBackground } from "@/components/ui/animated-background";
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,12 +34,10 @@ export default function RootLayout({
           enableSystem={false}
           disableTransitionOnChange
         >
-          <AnimatedBackground />
-          <LayoutWrapper>
-            {children}
-            <Analytics />
-            <SpeedInsights />
-          </LayoutWrapper>
+          {children}
+          <Analytics />
+          <SpeedInsights />
+          <Toaster />
         </ThemeProvider>
       </body>
     </html>

@@ -13,16 +13,27 @@ import { Button } from '@/components/ui/button';
 import { StaggerContainer, staggerItem } from '@/components/ui/animated';
 import { Github, ExternalLink } from 'lucide-react';
 import Link from 'next/link';
-import { projects } from '@/data/mock';
 import { motion } from 'framer-motion';
 
+interface Project {
+  id: string; // Changed from inferred to explicit or any
+  title: string;
+  description: string;
+  tech: string[];
+  link?: string | null;
+  github?: string | null;
+  // image?
+}
+
 interface ProjectsProps {
+  projects: Project[];
   limit?: number;
   className?: string;
 }
 
-export function Projects({ limit, className }: ProjectsProps) {
+export function Projects({ projects, limit, className }: ProjectsProps) {
   const displayedProjects = limit ? projects.slice(0, limit) : projects;
+
 
   return (
     <section className={className}>
@@ -46,16 +57,20 @@ export function Projects({ limit, className }: ProjectsProps) {
                 </div>
               </CardContent>
               <CardFooter className="flex gap-4">
-                <Button variant="outline" size="sm" asChild className="w-full">
-                  <Link href={project.github} target="_blank">
-                    <Github className="mr-2 h-4 w-4" /> Code
-                  </Link>
-                </Button>
-                <Button size="sm" asChild className="w-full">
-                  <Link href={project.link} target="_blank">
-                    <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
-                  </Link>
-                </Button>
+                {project.github && (
+                  <Button variant="outline" size="sm" asChild className="w-full">
+                    <Link href={project.github} target="_blank">
+                      <Github className="mr-2 h-4 w-4" /> Code
+                    </Link>
+                  </Button>
+                )}
+                {project.link && (
+                  <Button size="sm" asChild className="w-full">
+                    <Link href={project.link} target="_blank">
+                      <ExternalLink className="mr-2 h-4 w-4" /> Live Demo
+                    </Link>
+                  </Button>
+                )}
               </CardFooter>
             </Card>
           </motion.div>

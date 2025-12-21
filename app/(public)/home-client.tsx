@@ -3,7 +3,6 @@
 import { Projects } from '@/components/sections/projects';
 import { SlideUp } from '@/components/ui/animated';
 import TextType from '@/components/ui/text-type';
-import { profile } from '@/data/mock';
 import { Button, buttonVariants } from '@/components/ui/button';
 import Link from 'next/link';
 import { ArrowRight, Code2, Download, FolderOpen } from 'lucide-react';
@@ -116,7 +115,14 @@ const techLogos = [
   },
 ];
 
-export default function HomePage() {
+interface HomeClientProps {
+  profile: any
+  projects: any[]
+}
+
+export default function HomeClient({ profile, projects }: HomeClientProps) {
+  if (!profile) return null;
+
   return (
     <div className="flex flex-col gap-10 pb-24 w-full">
       <section className="space-y-6">
@@ -163,13 +169,7 @@ export default function HomePage() {
 
         <SlideUp delay={0.1}>
           <p className="text-muted-foreground leading-relaxed max-w-3xl text-base">
-            I&rsquo;m a passionate and detail-oriented Informatics Engineering
-            graduate based in Jakarta, Indonesia, specializing in JavaScript and
-            modern frontend frameworks. I enjoy building clean, responsive, and
-            user-focused web interfaces while continuously exploring new
-            technologies. As a fast learner with strong adaptability, I thrive
-            in collaborative environments and strive to contribute meaningful
-            impact to every development team I join.
+            {profile.bio || "I'm a passionate and detail-oriented Software Engineer."}
           </p>
         </SlideUp>
       </section>
@@ -229,10 +229,12 @@ export default function HomePage() {
           </SlideUp>
         </div>
         <SlideUp delay={0.5}>
-          <Projects limit={3} />
+          {/* Use passed projects */}
+          <Projects projects={projects} limit={3} />
         </SlideUp>
       </section>
 
+      {/* ... keeping the rest same for now */}
       <section className="py-12 relative rounded-2xl overflow-hidden bg-primary/5 border border-primary/10">
         <div className="absolute inset-0 bg-linear-to-r from-primary/10 to-transparent opacity-50" />
         <div className="relative z-10 flex flex-col items-center justify-center text-center gap-6 p-6">
