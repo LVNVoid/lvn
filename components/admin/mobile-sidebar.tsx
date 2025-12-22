@@ -1,7 +1,7 @@
 'use client'
 
 import { Menu } from 'lucide-react'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
 import { AdminSidebar } from '@/components/admin/sidebar'
 import { Button } from '@/components/ui/button'
 import { useState, useEffect } from 'react'

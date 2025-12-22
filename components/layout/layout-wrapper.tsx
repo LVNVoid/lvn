@@ -30,9 +30,17 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     }, [isMobileOpen]);
 
     return (
-        <div className="flex min-h-screen w-full mx-auto max-w-7xl bg-background/40 backdrop-blur-sm border-x border-border/50">
-            <Sidebar className="shrink-0" />
-            <Navbar isOpen={isMobileOpen} onToggle={() => setIsMobileOpen(!isMobileOpen)} />
+        <>
+            <div className="flex flex-col lg:flex-row min-h-screen w-full mx-auto max-w-7xl bg-background/40 backdrop-blur-sm border-x border-border/50">
+                <Sidebar className="shrink-0" />
+                <Navbar isOpen={isMobileOpen} onToggle={() => setIsMobileOpen(!isMobileOpen)} />
+                <main className="flex-1 min-h-screen min-w-0">
+                    <div className="w-full py-8 lg:py-12 px-4 lg:px-6">
+                        {children}
+                    </div>
+                </main>
+            </div>
+
             <AnimatePresence>
                 {isMobileOpen && (
                     <motion.div
@@ -40,7 +48,7 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -20 }}
                         transition={{ duration: 0.2 }}
-                        className="lg:hidden fixed top-16 left-0 right-0 bottom-0 z-40 bg-background/95 backdrop-blur-3xl overflow-y-auto border-t border-border/40 flex flex-col p-6"
+                        className="lg:hidden fixed top-16 left-0 right-0 bottom-0 z-50 bg-background/80 backdrop-blur-md overflow-y-auto border-t border-border/40 flex flex-col p-6"
                     >
                         <nav className="flex flex-col gap-2">
                             {navItems.map((item, idx) => {
@@ -101,11 +109,6 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
                     </motion.div>
                 )}
             </AnimatePresence>
-            <main className="flex-1 min-h-screen min-w-0">
-                <div className="w-full py-8 pt-20 lg:py-12 px-4 lg:px-6">
-                    {children}
-                </div>
-            </main>
-        </div>
+        </>
     );
 }

@@ -6,9 +6,8 @@ export const profile = {
   email: "elvien.purnawan13@gmail.com",
   avatar: "/images/profile.jpg",
   socials: {
-    github: "https://github.com/lvnvoid",
+    github: "https://github.com/LVNVoid",
     linkedin: "https://linkedin.com/in/elvien",
-    twitter: "https://twitter.com/elvien",
   },
 };
 

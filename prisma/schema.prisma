@@ -24,8 +24,8 @@ model Profile {
   bio       String
   location  String
   email     String
-  avatar    String // URL to image
-  socials   Json? // Store github, linkedin, twitter URLs as JSON
+  avatar    String
+  socials   Json?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -33,11 +33,12 @@ model Profile {
 model Project {
   id          String   @id @default(cuid())
   title       String
+  slug        String   @unique
   description String
   tech        String[]
   link        String?
   github      String?
-  image       String? // Optional project thumbnail
+  image       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 }
@@ -45,7 +46,7 @@ model Project {
 model Skill {
   id        String   @id @default(cuid())
   name      String   @unique
-  category  String? // Optional: Frontend, Backend, Tools
+  category  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
@@ -54,7 +55,7 @@ model Education {
   id          String   @id @default(cuid())
   school      String
   degree      String
-  year        String // e.g. "2020 - 2025"
+  year        String
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -63,8 +64,9 @@ model Education {
 model Certificate {
   id        String   @id @default(cuid())
   name      String
+  slug      String   @unique
   issuer    String
-  date      String // e.g. "2024"
+  date      String
   url       String?
   image     String?
   createdAt DateTime @default(now())

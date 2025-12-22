@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Home, User, Award, FolderOpen, LayoutDashboard, Mail, MessageCircle, Copyright } from "lucide-react";
 import { profile } from "@/data/mock";
-import SwitchThemeDialog from "../ui/switch-theme-dialog";
+import { ThemeToggle } from "../theme-toggle";
 
 export const navItems = [
     { name: "Home", href: "/", icon: Home },
@@ -50,8 +50,8 @@ export function Sidebar({ className, onNavigate }: SidebarProps) {
 
                 <div className="flex gap-2">
                     <div className="flex gap-2 items-center">
-                        {/* <ThemeToggle /> */}
-                        <SwitchThemeDialog />
+                        <ThemeToggle />
+                        {/* <SwitchThemeDialog /> */}
                     </div>
                 </div>
             </div>

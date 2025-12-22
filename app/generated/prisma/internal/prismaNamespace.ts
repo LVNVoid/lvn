@@ -923,6 +923,7 @@ export type ProfileScalarFieldEnum = (typeof ProfileScalarFieldEnum)[keyof typeo
 export const ProjectScalarFieldEnum = {
   id: 'id',
   title: 'title',
+  slug: 'slug',
   description: 'description',
   tech: 'tech',
   link: 'link',
@@ -962,6 +963,7 @@ export type EducationScalarFieldEnum = (typeof EducationScalarFieldEnum)[keyof t
 export const CertificateScalarFieldEnum = {
   id: 'id',
   name: 'name',
+  slug: 'slug',
   issuer: 'issuer',
   date: 'date',
   url: 'url',

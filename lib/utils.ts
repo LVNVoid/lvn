@@ -6,9 +6,21 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function formatDate(date: string) {
-    return new Date(date).toLocaleDateString('en-US', {
+    return new Date(date).toLocaleDateString('id-ID', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
     })
+}
+
+export function slugify(text: string) {
+    return text
+        .toString()
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, '-')       
+        .replace(/[^\w\-]+/g, '')    
+        .replace(/\-\-+/g, '-')     
+        .replace(/^-+/, '')          
+        .replace(/-+$/, '')          
 }

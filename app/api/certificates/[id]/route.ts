@@ -28,3 +28,29 @@ export async function DELETE(req: Request, props: { params: Promise<{ id: string
     return NextResponse.json({ error: 'Failed to delete certificate' }, { status: 500 })
   }
 }
+
+export async function PUT(req: Request, props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+  const session = await getServerSession(authOptions)
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+
+  try {
+    const data = await req.json()
+
+    const certificate = await prisma.certificate.update({
+      where: { id: params.id },
+      data: {
+        name: data.name,
+        issuer: data.issuer,
+        date: data.date,
+        url: data.url,
+        image: data.image,
+      },
+    })
+    return NextResponse.json(certificate)
+  } catch (error: any) {
+    return NextResponse.json({ error: error.message || 'Failed to update certificate' }, { status: 500 })
+  }
+}

@@ -3,6 +3,8 @@ import prisma from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 
+import { slugify } from '@/lib/utils'
+
 export async function GET() {
   try {
     const projects = await prisma.project.findMany({
@@ -27,9 +29,12 @@ export async function POST(req: Request) {
         return NextResponse.json({ error: 'Title is required' }, { status: 400 })
     }
 
+    const slug = slugify(data.title)
+
     const project = await prisma.project.create({
       data: {
         title: data.title,
+        slug,
         description: data.description,
         tech: data.tech, 
         link: data.link || null,

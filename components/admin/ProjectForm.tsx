@@ -45,7 +45,6 @@ export default function ProjectForm({ initialData }: { initialData?: Project }) 
 
     const handleTechChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setTechInput(e.target.value)
-        // Basic comma splitting
         const techs = e.target.value.split(',').map((t) => t.trim()).filter(Boolean)
         setFormData({ ...formData, tech: techs })
     }
@@ -67,6 +66,7 @@ export default function ProjectForm({ initialData }: { initialData?: Project }) 
             if (imageFile) {
                 const uploadData = new FormData()
                 uploadData.append('file', imageFile)
+                uploadData.append('folder', 'projects')
                 const res = await axios.post('/api/upload', uploadData)
                 imageUrl = res.data.secure_url
             }

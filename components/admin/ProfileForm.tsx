@@ -112,6 +112,7 @@ export default function ProfileForm({ initialData }: { initialData?: ProfileData
             if (avatarFile) {
                 const uploadData = new FormData()
                 uploadData.append('file', avatarFile)
+                uploadData.append('folder', 'profile')
                 const res = await axios.post('/api/upload', uploadData)
                 avatarUrl = res.data.secure_url
             }

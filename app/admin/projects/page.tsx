@@ -10,18 +10,42 @@ import {
     TableRow,
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Briefcase, Pencil } from 'lucide-react'
+import { Plus, Pencil, Eye } from 'lucide-react'
 import { DeleteButton } from '@/components/admin/DeleteButton'
+import {
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 
-async function getProjects() {
-    const projects = await prisma.project.findMany({
-        orderBy: { createdAt: 'desc' },
-    })
-    return projects
+interface Props {
+    searchParams: Promise<{
+        page?: string
+        limit?: string
+    }>
 }
 
-export default async function ProjectsPage() {
-    const projects = await getProjects()
+async function getProjects(page: number, limit: number) {
+    const skip = (page - 1) * limit
+    const [projects, total] = await Promise.all([
+        prisma.project.findMany({
+            orderBy: { createdAt: 'desc' },
+            skip,
+            take: limit,
+        }),
+        prisma.project.count(),
+    ])
+    return { projects, total }
+}
+
+export default async function ProjectsPage({ searchParams }: Props) {
+    const params = await searchParams;
+    const page = parseInt(params.page || '1')
+    const limit = parseInt(params.limit || '10')
+    const { projects, total } = await getProjects(page, limit)
+    const totalPages = Math.ceil(total / limit)
 
     return (
         <div className="space-y-6">
@@ -72,6 +96,11 @@ export default async function ProjectsPage() {
                                         <div className="flex justify-end gap-2">
                                             <Button variant="ghost" size="icon" asChild>
                                                 <Link href={`/admin/projects/${project.id}`}>
+                                                    <Eye className="h-4 w-4 text-muted-foreground" />
+                                                </Link>
+                                            </Button>
+                                            <Button variant="ghost" size="icon" asChild>
+                                                <Link href={`/admin/projects/${project.id}/edit`}>
                                                     <Pencil className="h-4 w-4 text-muted-foreground" />
                                                 </Link>
                                             </Button>
@@ -84,6 +113,45 @@ export default async function ProjectsPage() {
                     </TableBody>
                 </Table>
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <Pagination className="justify-end w-auto mx-0">
+                    <PaginationContent>
+                        <PaginationItem>
+                            {page > 1 ? (
+                                <PaginationPrevious href={`/admin/projects?page=${page - 1}`} />
+                            ) : (
+                                <PaginationPrevious
+                                    href="#"
+                                    className="pointer-events-none opacity-50"
+                                    aria-disabled={true}
+                                    tabIndex={-1}
+                                />
+                            )}
+                        </PaginationItem>
+
+                        <PaginationItem>
+                            <span className="text-sm font-medium px-4">
+                                Page {page} of {totalPages}
+                            </span>
+                        </PaginationItem>
+
+                        <PaginationItem>
+                            {page < totalPages ? (
+                                <PaginationNext href={`/admin/projects?page=${page + 1}`} />
+                            ) : (
+                                <PaginationNext
+                                    href="#"
+                                    className="pointer-events-none opacity-50"
+                                    aria-disabled={true}
+                                    tabIndex={-1}
+                                />
+                            )}
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            )}
         </div>
     )
 }

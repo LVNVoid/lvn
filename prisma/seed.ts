@@ -2,13 +2,13 @@ import 'dotenv/config'
 import prisma from '@/lib/prisma'
 import bcrypt from 'bcryptjs'
 import { profile, projects, skills, education, certificates } from '../data/mock'
+import { slugify } from '@/lib/utils'
 
 async function main() {
   console.log('Start seeding ...')
 
-  // 1. Seed Admin User
   try {
-    const email = 'admin@example.com'
+    const email = 'elvien.purnawan13@gmail.com'
     const password = 'password123'
     const hashedPassword = await bcrypt.hash(password, 10)
 
@@ -26,23 +26,17 @@ async function main() {
     console.error('Error seeding Admin:', e)
   }
 
-  // 2. Clean up Portfolio Data
   try {
-    // Delete in reverse order of dependencies if needed, 
-    // though here loose relations allow this.
-    // Using deleteMany for safety in development (TRUNCATE can be locked or restrictive)
     await prisma.certificate.deleteMany()
     await prisma.education.deleteMany()
     await prisma.project.deleteMany()
     await prisma.skill.deleteMany()
-    // For profile, we might update or recreate. Let's delete to be fresh.
     await prisma.profile.deleteMany()
     console.log('Cleaned up existing portfolio data')
   } catch (e) {
     console.warn("Cleanup warning:", e)
   }
 
-  // 3. Seed Profile
   try {
     const socialLinks = profile.socials ? JSON.parse(JSON.stringify(profile.socials)) : undefined
     await prisma.profile.create({
@@ -59,7 +53,6 @@ async function main() {
     console.log('Seeded Profile')
   } catch (e) { console.error("Error seeding Profile:", e) }
 
-  // 4. Seed Skills
   try {
     for (const skillName of skills) {
       await prisma.skill.create({
@@ -69,12 +62,12 @@ async function main() {
     console.log(`Seeded ${skills.length} Skills`)
   } catch (e) { console.error("Error seeding Skills:", e) }
 
-  // 5. Seed Projects
   try {
     for (const project of projects) {
       await prisma.project.create({
         data: {
           title: project.title,
+          slug: slugify(project.title),
           description: project.description,
           tech: project.tech,
           link: project.link,
@@ -85,7 +78,6 @@ async function main() {
     console.log(`Seeded ${projects.length} Projects`)
   } catch (e) { console.error("Error seeding Projects:", e) }
 
-  // 6. Seed Education
   try {
     for (const edu of education) {
       await prisma.education.create({
@@ -100,12 +92,12 @@ async function main() {
     console.log(`Seeded ${education.length} Education items`)
   } catch (e) { console.error("Error seeding Education:", e) }
 
-  // 7. Seed Certificates
   try {
     for (const cert of certificates) {
       await prisma.certificate.create({
         data: {
           name: cert.name,
+          slug: slugify(cert.name),
           issuer: cert.issuer,
           date: cert.date,
           url: cert.url,

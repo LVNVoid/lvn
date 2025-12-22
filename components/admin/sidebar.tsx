@@ -59,16 +59,15 @@ export const AdminSidebar = () => {
     const pathname = usePathname()
 
     return (
-        <div className="space-y-4 py-4 flex flex-col bg-background border border-r h-full text-white">
+        <div className="space-y-4 py-4 flex flex-col bg-sidebar border-r border-sidebar-border h-full text-sidebar-foreground">
             <div className="px-3 py-2 flex-1">
-                <Link href="/admin" className="flex items-center pl-3 mb-14">
-                    <div className="relative w-8 h-8 mr-4">
-                        <div className="flex h-full w-full items-center justify-center rounded-lg bg-white/10 font-bold text-white">
-                            E
+                <Link href="/admin" className="flex items-center justify-center mb-2 p-4">
+                    {/* <div className="relative w-8 h-8 mr-4">
+                        <div className="flex h-full w-full items-center justify-center rounded-lg bg-primary/10 font-bold text-primary">
                         </div>
-                    </div>
-                    <h1 className="text-2xl font-bold">
-                        Elvien
+                    </div> */}
+                    <h1 className="text-2xl text-primary font-bold">
+                        elviencode
                     </h1>
                 </Link>
                 <div className="space-y-1">
@@ -77,8 +76,8 @@ export const AdminSidebar = () => {
                             key={route.href}
                             href={route.href}
                             className={cn(
-                                'text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-white hover:bg-white/10 rounded-lg transition',
-                                pathname === route.href ? 'text-white bg-white/10' : 'text-zinc-400',
+                                'text-sm group flex p-3 w-full justify-start font-medium cursor-pointer hover:text-sidebar-accent-foreground hover:bg-sidebar-accent rounded-lg transition',
+                                pathname === route.href ? 'text-sidebar-accent-foreground font-semibold bg-sidebar-accent' : 'text-muted-foreground',
                             )}
                         >
                             <div className="flex items-center flex-1">
@@ -88,17 +87,17 @@ export const AdminSidebar = () => {
                         </Link>
                     ))}
                 </div>
-            </div>
+            </div >
             <div className="px-3 py-2">
                 <Button
                     onClick={() => signOut()}
                     variant="ghost"
-                    className="w-full justify-start text-zinc-400 hover:text-white hover:bg-white/10"
+                    className="w-full justify-start text-muted-foreground hover:text-sidebar-accent-foreground hover:bg-sidebar-accent"
                 >
                     <LogOut className="h-5 w-5 mr-3" />
                     Logout
                 </Button>
             </div>
-        </div>
+        </div >
     )
 }

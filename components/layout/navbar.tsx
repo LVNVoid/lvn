@@ -13,7 +13,7 @@ interface NavbarProps {
 
 export function Navbar({ isOpen, onToggle }: NavbarProps) {
     return (
-        <div className="lg:hidden fixed top-0 left-0 right-0 h-16 border-b border-border/40 bg-gradient-to-r from-background/80 to-background/40 backdrop-blur-xl z-50 flex items-center px-4 justify-between">
+        <div className="lg:hidden sticky top-0 left-0 right-0 h-16 border-b border-border/40 bg-background/80 backdrop-blur-md z-50 flex items-center px-4 justify-between">
             <Link href="/" className="mr-6 flex items-center space-x-2">
                 <div className="relative w-10 h-10 rounded-full overflow-hidden border-1 border-gray-500">
                     <Image

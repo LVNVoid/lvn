@@ -10,25 +10,42 @@ import {
     TableRow,
 } from '@/components/ui/table'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Plus, MoreHorizontal, ExternalLink, Trash } from 'lucide-react'
+import { Plus, ExternalLink, Edit } from 'lucide-react'
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
+    Pagination,
+    PaginationContent,
+    PaginationItem,
+    PaginationNext,
+    PaginationPrevious,
+} from "@/components/ui/pagination"
 import { DeleteButton } from '@/components/admin/DeleteButton'
 
-async function getCertificates() {
-    const certificates = await prisma.certificate.findMany({
-        orderBy: { createdAt: 'desc' },
-    })
-    return certificates
+interface Props {
+    searchParams: Promise<{
+        page?: string
+        limit?: string
+    }>
 }
 
-export default async function CertificatesPage() {
-    const certificates = await getCertificates()
+async function getCertificates(page: number, limit: number) {
+    const skip = (page - 1) * limit
+    const [certificates, total] = await Promise.all([
+        prisma.certificate.findMany({
+            orderBy: { createdAt: 'desc' },
+            skip,
+            take: limit,
+        }),
+        prisma.certificate.count(),
+    ])
+    return { certificates, total }
+}
+
+export default async function CertificatesPage({ searchParams }: Props) {
+    const params = await searchParams;
+    const page = parseInt(params.page || '1')
+    const limit = parseInt(params.limit || '10')
+    const { certificates, total } = await getCertificates(page, limit)
+    const totalPages = Math.ceil(total / limit)
 
     return (
         <div className="space-y-6">
@@ -87,6 +104,11 @@ export default async function CertificatesPage() {
                                                     </a>
                                                 </Button>
                                             )}
+                                            <Button variant="ghost" size="icon" asChild>
+                                                <Link href={`/admin/certificates/${cert.id}/edit`}>
+                                                    <Edit className="h-4 w-4" />
+                                                </Link>
+                                            </Button>
                                             <DeleteButton id={cert.id} section="certificates" itemName="Certificate" />
                                         </div>
                                     </TableCell>
@@ -96,6 +118,45 @@ export default async function CertificatesPage() {
                     </TableBody>
                 </Table>
             </div>
+
+            {/* Pagination Controls */}
+            {totalPages > 1 && (
+                <Pagination className="justify-end w-auto mx-0">
+                    <PaginationContent>
+                        <PaginationItem>
+                            {page > 1 ? (
+                                <PaginationPrevious href={`/admin/certificates?page=${page - 1}`} />
+                            ) : (
+                                <PaginationPrevious
+                                    href="#"
+                                    className="pointer-events-none opacity-50"
+                                    aria-disabled={true}
+                                    tabIndex={-1}
+                                />
+                            )}
+                        </PaginationItem>
+
+                        <PaginationItem>
+                            <span className="text-sm font-medium px-4">
+                                Page {page} of {totalPages}
+                            </span>
+                        </PaginationItem>
+
+                        <PaginationItem>
+                            {page < totalPages ? (
+                                <PaginationNext href={`/admin/certificates?page=${page + 1}`} />
+                            ) : (
+                                <PaginationNext
+                                    href="#"
+                                    className="pointer-events-none opacity-50"
+                                    aria-disabled={true}
+                                    tabIndex={-1}
+                                />
+                            )}
+                        </PaginationItem>
+                    </PaginationContent>
+                </Pagination>
+            )}
         </div>
     )
 }

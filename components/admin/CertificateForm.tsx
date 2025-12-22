@@ -55,6 +55,7 @@ export default function CertificateForm({ initialData }: { initialData?: Certifi
             if (imageFile) {
                 const uploadData = new FormData()
                 uploadData.append('file', imageFile)
+                uploadData.append('folder', 'certificates')
                 const res = await axios.post('/api/upload', uploadData)
                 imageUrl = res.data.secure_url
             }
@@ -62,9 +63,7 @@ export default function CertificateForm({ initialData }: { initialData?: Certifi
             const payload = { ...formData, image: imageUrl }
 
             if (initialData?.id) {
-                toast.error("Update not implemented yet, please delete and recreate.")
-                setLoading(false) // Reset loading
-                return
+                await axios.put(`/api/certificates/${initialData.id}`, payload)
             } else {
                 await axios.post('/api/certificates', payload)
             }
@@ -143,26 +142,29 @@ export default function CertificateForm({ initialData }: { initialData?: Certifi
                     </div>
 
                     <div className="space-y-2">
-                        <Label>Certificate Image</Label>
-                        <div className="flex items-center gap-4">
-                            <Input
-                                type="file"
-                                accept="image/*"
-                                onChange={handleFileChange}
-                                className="cursor-pointer"
-                            />
-                        </div>
-                        {formData.image && !imageFile && (
-                            <p className="text-xs text-muted-foreground mt-1">
-                                Current image: {formData.image.split('/').pop()}
-                            </p>
-                        )}
-                        {imageFile && (
-                            <p className="text-xs text-emerald-600 mt-1 flex items-center">
-                                <Upload className="mr-1 h-3 w-3" /> Selected: {imageFile.name}
-                            </p>
-                        )}
+                        <Input
+                            type="file"
+                            accept="image/*"
+                            onChange={handleFileChange}
+                            className="cursor-pointer"
+                        />
                     </div>
+
+                    {(imageFile || formData.image) && (
+                        <div className="mt-4 relative w-full h-48 bg-muted/30 rounded-lg border-2 border-dashed border-muted flex items-center justify-center overflow-hidden">
+                            <img
+                                src={imageFile ? URL.createObjectURL(imageFile) : formData.image}
+                                alt="Preview"
+                                className="h-full w-full object-contain"
+                            />
+                            {imageFile && (
+                                <div className="absolute bottom-2 right-2 bg-black/75 text-white text-xs px-2 py-1 rounded-md flex items-center">
+                                    <Upload className="mr-1 h-3 w-3" />
+                                    {imageFile.name}
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                     <CardFooter className="px-0 pt-4 flex gap-4 justify-end">
                         <Button
@@ -186,6 +188,6 @@ export default function CertificateForm({ initialData }: { initialData?: Certifi
                     </CardFooter>
                 </form>
             </CardContent>
-        </Card>
+        </Card >
     )
 }
