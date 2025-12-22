@@ -1,7 +1,6 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { profile } from "@/data/mock";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
@@ -9,9 +8,11 @@ import Link from "next/link";
 interface NavbarProps {
     isOpen: boolean;
     onToggle: () => void;
+    profile: any;
 }
 
-export function Navbar({ isOpen, onToggle }: NavbarProps) {
+export function Navbar({ isOpen, onToggle, profile }: NavbarProps) {
+
     return (
         <div className="lg:hidden sticky top-0 left-0 right-0 h-16 border-b border-border/40 bg-background/80 backdrop-blur-md z-50 flex items-center px-4 justify-between">
             <Link href="/" className="mr-6 flex items-center space-x-2">
@@ -19,8 +20,8 @@ export function Navbar({ isOpen, onToggle }: NavbarProps) {
                     <Image
                         src={profile.avatar || "/placeholder.png"}
                         alt={profile.name}
-                        width={200}
-                        height={200}
+                        fill
+                        sizes="60px"
                         className="object-cover"
                     />
                 </div>

@@ -1,4 +1,4 @@
-import EducationForm from '@/components/admin/EducationForm'
+import EducationForm from "@/components/admin/education-form";
 
 export default function NewEducationPage() {
     return (

@@ -1,9 +1,9 @@
 'use client'
 
 import { useState } from 'react'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { projectsService } from '@/services/projects'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
@@ -11,6 +11,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Loader2, Upload, X } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import toast from 'react-hot-toast'
+import { useImageUpload } from '@/hooks/use-image-upload'
 
 interface Project {
     id?: string
@@ -26,6 +27,14 @@ export default function ProjectForm({ initialData }: { initialData?: Project }) 
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const {
+        imageFile,
+        previewUrl,
+        handleFileChange,
+        handleRemoveImage,
+        uploadImage
+    } = useImageUpload(initialData?.image)
+
     const [formData, setFormData] = useState<Project>(
         initialData || {
             title: '',
@@ -37,7 +46,6 @@ export default function ProjectForm({ initialData }: { initialData?: Project }) 
         }
     )
     const [techInput, setTechInput] = useState(initialData?.tech.join(', ') || '')
-    const [imageFile, setImageFile] = useState<File | null>(null)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -49,12 +57,6 @@ export default function ProjectForm({ initialData }: { initialData?: Project }) 
         setFormData({ ...formData, tech: techs })
     }
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setImageFile(e.target.files[0])
-        }
-    }
-
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
@@ -64,19 +66,16 @@ export default function ProjectForm({ initialData }: { initialData?: Project }) 
             let imageUrl = formData.image
 
             if (imageFile) {
-                const uploadData = new FormData()
-                uploadData.append('file', imageFile)
-                uploadData.append('folder', 'projects')
-                const res = await axios.post('/api/upload', uploadData)
-                imageUrl = res.data.secure_url
+                const uploadedUrl = await uploadImage('projects')
+                if (uploadedUrl) imageUrl = uploadedUrl
             }
 
             const payload = { ...formData, image: imageUrl }
 
             if (initialData?.id) {
-                await axios.put(`/api/projects/${initialData.id}`, payload)
+                await projectsService.update(initialData.id, payload)
             } else {
-                await axios.post('/api/projects', payload)
+                await projectsService.create(payload)
             }
 
             router.push('/admin/projects')
@@ -172,15 +171,19 @@ export default function ProjectForm({ initialData }: { initialData?: Project }) 
                             onChange={handleFileChange}
                             className="cursor-pointer"
                         />
-                        {formData.image && !imageFile && (
-                            <p className="text-xs text-muted-foreground mt-1">
-                                Current image: {formData.image.split('/').pop()}
-                            </p>
-                        )}
-                        {imageFile && (
-                            <p className="text-xs text-emerald-600 mt-1 flex items-center">
-                                <Upload className="mr-1 h-3 w-3" /> Selected: {imageFile.name}
-                            </p>
+                        {previewUrl && (
+                            <div className="mt-4 relative w-full h-48 bg-muted/30 rounded-lg border-2 border-dashed border-muted flex items-center justify-center overflow-hidden">
+                                <img
+                                    src={previewUrl}
+                                    alt="Preview"
+                                    className="h-full w-full object-contain"
+                                />
+                                {imageFile && (
+                                    <div className="absolute bottom-2 right-2 bg-black/75 text-white text-xs px-2 py-1 rounded-md flex items-center">
+                                        <Upload className="mr-1 h-3 w-3" /> Selected: {imageFile.name}
+                                    </div>
+                                )}
+                            </div>
                         )}
                     </div>
 

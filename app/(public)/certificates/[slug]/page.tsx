@@ -21,14 +21,14 @@ export default async function CertificateDetailPage({ params }: PageProps) {
 
     return (
         <div className="container mx-auto max-w-4xl py-12 px-4">
-            <Button variant="ghost" asChild className="mb-8">
-                <Link href="/">
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Portfolio
+            <Button variant="outline" asChild className="mb-8">
+                <Link href="/certificates">
+                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Certificates
                 </Link>
             </Button>
 
             <div className="grid md:grid-cols-2 gap-8 items-start">
-                <div className="relative aspect-video w-full overflow-hidden rounded-xl border bg-muted">
+                <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted">
                     {certificate.image ? (
                         <Image
                             src={certificate.image}

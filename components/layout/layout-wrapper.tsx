@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { usePathname } from "next/navigation";
 
-export function LayoutWrapper({ children }: { children: React.ReactNode }) {
+export function LayoutWrapper({ children, profile }: { children: React.ReactNode; profile: any }) {
     const [isMobileOpen, setIsMobileOpen] = useState(false);
     const pathname = usePathname();
 
@@ -32,8 +32,8 @@ export function LayoutWrapper({ children }: { children: React.ReactNode }) {
     return (
         <>
             <div className="flex flex-col lg:flex-row min-h-screen w-full mx-auto max-w-7xl bg-background/40 backdrop-blur-sm border-x border-border/50">
-                <Sidebar className="shrink-0" />
-                <Navbar isOpen={isMobileOpen} onToggle={() => setIsMobileOpen(!isMobileOpen)} />
+                <Sidebar className="shrink-0" profile={profile} />
+                <Navbar isOpen={isMobileOpen} onToggle={() => setIsMobileOpen(!isMobileOpen)} profile={profile} />
                 <main className="flex-1 min-h-screen min-w-0">
                     <div className="w-full py-8 lg:py-12 px-4 lg:px-6">
                         {children}

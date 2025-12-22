@@ -10,7 +10,7 @@ import {
     TableRow,
 } from '@/components/ui/table'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Plus, ExternalLink, Edit } from 'lucide-react'
+import { Plus, ExternalLink, Edit, Eye } from 'lucide-react'
 import {
     Pagination,
     PaginationContent,
@@ -18,7 +18,7 @@ import {
     PaginationNext,
     PaginationPrevious,
 } from "@/components/ui/pagination"
-import { DeleteButton } from '@/components/admin/DeleteButton'
+import { DeleteButton } from "@/components/admin/delete-button";
 
 interface Props {
     searchParams: Promise<{
@@ -105,11 +105,16 @@ export default async function CertificatesPage({ searchParams }: Props) {
                                                 </Button>
                                             )}
                                             <Button variant="ghost" size="icon" asChild>
-                                                <Link href={`/admin/certificates/${cert.id}/edit`}>
+                                                <Link href={`/admin/certificates/${cert.slug}/edit`}>
                                                     <Edit className="h-4 w-4" />
                                                 </Link>
                                             </Button>
-                                            <DeleteButton id={cert.id} section="certificates" itemName="Certificate" />
+                                            <Button variant="ghost" size="icon" asChild>
+                                                <Link href={`/admin/certificates/${cert.slug}`}>
+                                                    <Eye className="h-4 w-4" />
+                                                </Link>
+                                            </Button>
+                                            <DeleteButton id={cert.slug} section="certificates" itemName="Certificate" />
                                         </div>
                                     </TableCell>
                                 </TableRow>

@@ -9,7 +9,7 @@ import {
 import { Button } from "./button";
 import { motion } from "framer-motion";
 import { Moon } from "lucide-react";
-import { useMounted } from "@/hooks/useMounted";
+import { useMounted } from "@/hooks/use-mounted";
 
 export default function SwitchThemeDialog() {
     const mounted = useMounted();

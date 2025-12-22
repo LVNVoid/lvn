@@ -1,12 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
+import { profileService } from '@/services/profile'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Trash2, Upload, Loader2, Save } from 'lucide-react'
+import { useImageUpload } from '@/hooks/use-image-upload'
 
 import { Button } from '@/components/ui/button'
 import {
@@ -22,7 +23,6 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Separator } from '@/components/ui/separator'
 import toast from 'react-hot-toast'
 
 const profileSchema = z.object({
@@ -65,8 +65,14 @@ interface ProfileData {
 export default function ProfileForm({ initialData }: { initialData?: ProfileData }) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
-    const [avatarFile, setAvatarFile] = useState<File | null>(null)
-    const [previewUrl, setPreviewUrl] = useState<string | null>(initialData?.avatar || null)
+    const {
+        imageFile,
+        previewUrl,
+        handleFileChange,
+        handleRemoveImage,
+        uploadImage,
+        setPreviewUrl
+    } = useImageUpload(initialData?.avatar)
 
     const defaultValues: Partial<ProfileFormValues> = {
         name: initialData?.name || '',
@@ -88,18 +94,13 @@ export default function ProfileForm({ initialData }: { initialData?: ProfileData
         mode: 'onChange',
     })
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            const file = e.target.files[0]
-            setAvatarFile(file)
-            setPreviewUrl(URL.createObjectURL(file))
-        }
+    const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        handleFileChange(e)
     }
 
-    const handleDeleteAvatar = (e: React.MouseEvent) => {
+    const onDeleteAvatar = (e: React.MouseEvent) => {
         e.preventDefault()
-        setAvatarFile(null)
-        setPreviewUrl(null)
+        handleRemoveImage()
         form.setValue('avatar', '')
     }
 
@@ -109,12 +110,9 @@ export default function ProfileForm({ initialData }: { initialData?: ProfileData
         try {
             let avatarUrl = data.avatar
 
-            if (avatarFile) {
-                const uploadData = new FormData()
-                uploadData.append('file', avatarFile)
-                uploadData.append('folder', 'profile')
-                const res = await axios.post('/api/upload', uploadData)
-                avatarUrl = res.data.secure_url
+            if (imageFile) {
+                const uploadedUrl = await uploadImage('profile')
+                if (uploadedUrl) avatarUrl = uploadedUrl
             }
 
             const payload = {
@@ -122,7 +120,7 @@ export default function ProfileForm({ initialData }: { initialData?: ProfileData
                 avatar: avatarUrl || '',
             }
 
-            await axios.put('/api/profile', payload)
+            await profileService.update(payload)
 
             router.refresh()
             toast.success('Profile updated successfully!')
@@ -252,18 +250,18 @@ export default function ProfileForm({ initialData }: { initialData?: ProfileData
                                             <input
                                                 type="file"
                                                 accept="image/*"
-                                                onChange={handleFileChange}
+                                                onChange={onFileChange}
                                                 className="absolute inset-0 opacity-0 cursor-pointer"
                                             />
                                         </Button>
                                     </div>
 
-                                    {(previewUrl || avatarFile) && (
+                                    {(previewUrl || imageFile) && (
                                         <Button
                                             type="button"
                                             variant="destructive"
                                             size="icon"
-                                            onClick={handleDeleteAvatar}
+                                            onClick={onDeleteAvatar}
                                             title="Remove Avatar"
                                         >
                                             <Trash2 className="h-4 w-4" />

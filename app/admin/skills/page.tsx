@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/table'
 import { Plus, Tag } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
-import { DeleteButton } from '@/components/admin/DeleteButton'
+import { DeleteButton } from "@/components/admin/delete-button";
 
 async function getSkills() {
     const skills = await prisma.skill.findMany({

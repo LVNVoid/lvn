@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/table'
 import { Badge } from '@/components/ui/badge'
 import { Plus, Pencil, Eye } from 'lucide-react'
-import { DeleteButton } from '@/components/admin/DeleteButton'
+import { DeleteButton } from "@/components/admin/delete-button";
 import {
     Pagination,
     PaginationContent,

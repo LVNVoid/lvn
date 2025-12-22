@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma'
-import HomeClient from './home-client'
+import HomeClient from "@/components/features/home/home-client";
 
 export const dynamic = 'force-dynamic'
 

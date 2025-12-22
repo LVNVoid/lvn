@@ -1,15 +1,17 @@
 import prisma from '@/lib/prisma'
-import CertificateForm from '@/components/admin/CertificateForm'
+import CertificateForm from "@/components/admin/certificate-form";
 import { notFound } from 'next/navigation'
 
 interface PageProps {
-    params: Promise<{ id: string }>
+    params: Promise<{
+        slug: string
+    }>
 }
 
 export default async function EditCertificatePage({ params }: PageProps) {
-    const { id } = await params
+    const { slug } = await params
     const certificate = await prisma.certificate.findUnique({
-        where: { id },
+        where: { slug: slug },
     })
 
     if (!certificate) {

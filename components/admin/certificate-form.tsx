@@ -1,17 +1,19 @@
 'use client'
 
 import { useState } from 'react'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { certificatesService } from '@/services/certificates'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
 import { Loader2, Upload, X } from 'lucide-react'
 import toast from 'react-hot-toast'
+import { useImageUpload } from '@/hooks/use-image-upload'
 
 interface Certificate {
     id?: string
+    slug?: string
     name: string
     issuer: string
     date: string
@@ -23,6 +25,13 @@ export default function CertificateForm({ initialData }: { initialData?: Certifi
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
+    const {
+        imageFile,
+        previewUrl,
+        handleFileChange,
+        uploadImage
+    } = useImageUpload(initialData?.image)
+
     const [formData, setFormData] = useState<Certificate>(
         initialData || {
             name: '',
@@ -32,16 +41,9 @@ export default function CertificateForm({ initialData }: { initialData?: Certifi
             image: '',
         }
     )
-    const [imageFile, setImageFile] = useState<File | null>(null)
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
-    }
-
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setImageFile(e.target.files[0])
-        }
     }
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -53,19 +55,16 @@ export default function CertificateForm({ initialData }: { initialData?: Certifi
             let imageUrl = formData.image
 
             if (imageFile) {
-                const uploadData = new FormData()
-                uploadData.append('file', imageFile)
-                uploadData.append('folder', 'certificates')
-                const res = await axios.post('/api/upload', uploadData)
-                imageUrl = res.data.secure_url
+                const uploadedUrl = await uploadImage('certificates')
+                if (uploadedUrl) imageUrl = uploadedUrl
             }
 
             const payload = { ...formData, image: imageUrl }
 
-            if (initialData?.id) {
-                await axios.put(`/api/certificates/${initialData.id}`, payload)
+            if (initialData?.slug) {
+                await certificatesService.update(initialData.slug, payload)
             } else {
-                await axios.post('/api/certificates', payload)
+                await certificatesService.create(payload)
             }
 
             router.push('/admin/certificates')
@@ -150,10 +149,10 @@ export default function CertificateForm({ initialData }: { initialData?: Certifi
                         />
                     </div>
 
-                    {(imageFile || formData.image) && (
+                    {(imageFile || previewUrl) && (
                         <div className="mt-4 relative w-full h-48 bg-muted/30 rounded-lg border-2 border-dashed border-muted flex items-center justify-center overflow-hidden">
                             <img
-                                src={imageFile ? URL.createObjectURL(imageFile) : formData.image}
+                                src={previewUrl || ''}
                                 alt="Preview"
                                 className="h-full w-full object-contain"
                             />

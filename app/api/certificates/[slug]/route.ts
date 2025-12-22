@@ -4,7 +4,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
 import { deleteFromCloudinary } from '@/lib/cloudinary'
 
-export async function DELETE(req: Request, props: { params: Promise<{ id: string }> }) {
+export async function DELETE(req: Request, props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const session = await getServerSession(authOptions)
   if (!session) {
@@ -13,7 +13,7 @@ export async function DELETE(req: Request, props: { params: Promise<{ id: string
 
   try {
     const certificate = await prisma.certificate.findUnique({
-      where: { id: params.id },
+      where: { slug: params.slug },
     })
 
     if (certificate?.image) {
@@ -21,7 +21,7 @@ export async function DELETE(req: Request, props: { params: Promise<{ id: string
     }
 
     await prisma.certificate.delete({
-      where: { id: params.id },
+      where: { slug: params.slug },
     })
     return NextResponse.json({ message: 'Certificate deleted' })
   } catch (error) {
@@ -29,7 +29,7 @@ export async function DELETE(req: Request, props: { params: Promise<{ id: string
   }
 }
 
-export async function PUT(req: Request, props: { params: Promise<{ id: string }> }) {
+export async function PUT(req: Request, props: { params: Promise<{ slug: string }> }) {
   const params = await props.params;
   const session = await getServerSession(authOptions)
   if (!session) {
@@ -40,7 +40,7 @@ export async function PUT(req: Request, props: { params: Promise<{ id: string }>
     const data = await req.json()
 
     const certificate = await prisma.certificate.update({
-      where: { id: params.id },
+      where: { slug: params.slug },
       data: {
         name: data.name,
         issuer: data.issuer,

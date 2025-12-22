@@ -10,7 +10,7 @@ import {
     TableRow,
 } from '@/components/ui/table'
 import { Plus, GraduationCap } from 'lucide-react'
-import { DeleteButton } from '@/components/admin/DeleteButton'
+import { DeleteButton } from "@/components/admin/delete-button";
 
 async function getEducation() {
     const education = await prisma.education.findMany({

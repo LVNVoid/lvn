@@ -1,4 +1,4 @@
-import ProjectForm from '@/components/admin/ProjectForm'
+import ProjectForm from "@/components/admin/project-form";
 import prisma from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 

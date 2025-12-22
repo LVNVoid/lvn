@@ -6,8 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Home, User, Award, FolderOpen, LayoutDashboard, Mail, MessageCircle, Copyright } from "lucide-react";
-import { profile } from "@/data/mock";
-import { ThemeToggle } from "../theme-toggle";
+import { ThemeToggle } from "@/components/ui/theme-toggle";
 
 export const navItems = [
     { name: "Home", href: "/", icon: Home },
@@ -20,14 +19,17 @@ export const navItems = [
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
     onNavigate?: () => void;
+    profile: any;
 }
 
-export function Sidebar({ className, onNavigate }: SidebarProps) {
+export function Sidebar({ className, onNavigate, profile }: SidebarProps) {
     const pathname = usePathname();
 
     const handleNavClick = () => {
         if (onNavigate) onNavigate();
     }
+
+    if (!profile) return null;
 
     return (
         <aside className={cn("sticky top-0 z-40 h-screen w-80 border-r border-border/40 p-6 hidden lg:flex flex-col gap-6", className)}>
@@ -36,8 +38,8 @@ export function Sidebar({ className, onNavigate }: SidebarProps) {
                     <Image
                         src={profile.avatar || "/placeholder.png"}
                         alt={profile.name}
-                        width={800}
-                        height={800}
+                        fill
+                        sizes="100px"
                         className="object-cover"
                     />
                 </div>

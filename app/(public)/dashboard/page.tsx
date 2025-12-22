@@ -2,7 +2,7 @@ import { getRecentActivity } from '@/lib/github';
 import { SlideUp, StaggerContainer } from '@/components/ui/animated';
 import { Activity, GithubIcon, HistoryIcon } from 'lucide-react';
 import { formatDate } from '@/lib/utils';
-import { GitHubCalendarWrapper } from '@/components/github-calendar';
+import { GitHubCalendarWrapper } from "@/components/features/github/github-calendar";
 import { PageHeader } from '@/components/ui/page-header';
 import { LayoutDashboard } from 'lucide-react';
 

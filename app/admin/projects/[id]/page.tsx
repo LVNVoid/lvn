@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { ChevronLeft, Edit, Github, Globe } from 'lucide-react'
+import { formatDate } from '@/lib/utils'
 
 interface PageProps {
     params: Promise<{ id: string }>
@@ -45,7 +46,7 @@ export default async function ProjectDetailPage(props: PageProps) {
                         <CardHeader>
                             <CardTitle className="text-2xl">{project.title}</CardTitle>
                             <CardDescription>
-                                Created on {new Date(project.createdAt).toLocaleDateString()}
+                                Created on {formatDate(project.createdAt)}
                             </CardDescription>
                         </CardHeader>
                         <CardContent className="space-y-6">

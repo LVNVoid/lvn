@@ -1,4 +1,4 @@
-import ProfileForm from '@/components/admin/ProfileForm'
+import ProfileForm from "@/components/admin/profile-form";
 import prisma from '@/lib/prisma'
 
 async function getProfile() {
