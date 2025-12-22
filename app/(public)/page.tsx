@@ -31,11 +31,11 @@ export default async function HomePage() {
 
             <div className="w-full h-[1px] bg-border/50" />
 
-            <SkillsSection />
+            <FeaturedProjectsSection projects={projects} />
 
             <div className="w-full h-[1px] bg-border/50" />
 
-            <FeaturedProjectsSection projects={projects} />
+            <SkillsSection />
 
             <CtaSection />
         </div>
