@@ -1,7 +1,10 @@
 import prisma from '@/lib/prisma'
-import HomeClient from "@/components/features/home/home-client";
+import { HeroSection } from '@/components/features/home/hero-section';
+import { SkillsSection } from '@/components/features/home/skills-section';
+import { FeaturedProjectsSection } from '@/components/features/home/featured-projects-section';
+import { CtaSection } from '@/components/features/home/cta-section';
 
-export const dynamic = 'force-dynamic'
+export const revalidate = 60;
 
 async function getData() {
     try {
@@ -20,5 +23,21 @@ async function getData() {
 export default async function HomePage() {
     const { profile, projects } = await getData()
 
-    return <HomeClient profile={profile} projects={projects} />
+    if (!profile) return null;
+
+    return (
+        <div className="flex flex-col gap-10 pb-24 w-full">
+            <HeroSection profile={profile} />
+
+            <div className="w-full h-[1px] bg-border/50" />
+
+            <SkillsSection />
+
+            <div className="w-full h-[1px] bg-border/50" />
+
+            <FeaturedProjectsSection projects={projects} />
+
+            <CtaSection />
+        </div>
+    )
 }
