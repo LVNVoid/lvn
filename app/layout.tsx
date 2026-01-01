@@ -15,6 +15,9 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Elvien | Portfolio",
   description: "Personal portfolio of Elvien, a Full Stack Developer.",
+  verification: {
+    google: "bqnPBWYX8-P_cG1MdwSLqSeGEEAxj0eIjZJWe5oatU8",
+  },
 };
 
 export default function RootLayout({
