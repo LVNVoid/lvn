@@ -9,6 +9,32 @@ interface PageProps {
     params: Promise<{ slug: string }>
 }
 
+import { Metadata } from 'next'
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+    const { slug } = await params
+    const certificate = await prisma.certificate.findUnique({
+        where: { slug },
+        select: { name: true, issuer: true, image: true }
+    })
+
+    if (!certificate) {
+        return {
+            title: 'Certificate Not Found',
+        }
+    }
+
+    return {
+        title: `${certificate.name} | Certificates`,
+        description: `Certificate for ${certificate.name} issued by ${certificate.issuer}.`,
+        openGraph: {
+            title: certificate.name,
+            description: `Certificate for ${certificate.name} issued by ${certificate.issuer}.`,
+            images: certificate.image ? [certificate.image] : [],
+        }
+    }
+}
+
 export default async function CertificateDetailPage({ params }: PageProps) {
     const { slug } = await params
     const certificate = await prisma.certificate.findUnique({

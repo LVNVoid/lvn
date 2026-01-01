@@ -1,8 +1,14 @@
 import { Projects } from "@/components/sections/projects";
 import { PageHeader } from "@/components/ui/page-header";
 import { Cuboid } from "lucide-react";
+import { Metadata } from "next";
 
 import prisma from "@/lib/prisma";
+
+export const metadata: Metadata = {
+    title: "Projects",
+    description: "Explore my portfolio of projects, featuring web applications, open source contributions, and experiments.",
+};
 
 export const revalidate = 60;
 

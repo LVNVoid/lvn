@@ -3,6 +3,12 @@ import { PageHeader } from "@/components/ui/page-header";
 import { GraduationCap, User } from "lucide-react";
 import prisma from "@/lib/prisma";
 import { Education } from "@/components/sections/education";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+    title: "About Me",
+    description: "Learn more about Elvien, his background, education, and journey as a Software Engineer.",
+};
 
 export default async function AboutPage() {
     const profile = await prisma.profile.findFirst();

@@ -6,6 +6,7 @@ import NextTopLoader from 'nextjs-toploader';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Toaster } from 'react-hot-toast';
+import JsonLd from "@/components/json-ld";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -13,10 +14,51 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Elvien | Portfolio",
-  description: "Personal portfolio of Elvien, a Full Stack Developer.",
+  metadataBase: new URL("https://elviencode.vercel.app"),
+  title: {
+    default: "Elvien | Full Stack Developer",
+    template: "%s | Elvien",
+  },
+  description: "Personal portfolio of Elvien, a Full Stack Developer specializing in building modern web applications with Next.js and React.",
+  keywords: ["Elvien", "Full Stack Developer", "Next.js", "React", "Web Development", "Software Engineer", "Portfolio"],
+  authors: [{ name: "Elvien", url: "https://elviencode.vercel.app" }],
+  creator: "Elvien",
+  openGraph: {
+    type: "website",
+    locale: "en_US",
+    url: "https://elviencode.vercel.app",
+    siteName: "Elvien Portfolio",
+    title: "Elvien | Full Stack Developer",
+    description: "Personal portfolio of Elvien, a Full Stack Developer specializing in building modern web applications.",
+    images: [
+      {
+        url: "/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Elvien Portfolio",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Elvien | Full Stack Developer",
+    description: "Personal portfolio of Elvien, a Full Stack Developer specializing in building modern web applications.",
+    images: ["/og-image.jpg"],
+    creator: "@elviencode", // Assuming a handle or generic
+  },
   verification: {
     google: "bqnPBWYX8-P_cG1MdwSLqSeGEEAxj0eIjZJWe5oatU8",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
 };
 
@@ -41,6 +83,7 @@ export default function RootLayout({
           <Analytics />
           <SpeedInsights />
           <Toaster />
+          <JsonLd />
         </ThemeProvider>
       </body>
     </html>
