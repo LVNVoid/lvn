@@ -13,31 +13,59 @@ async function getData() {
             orderBy: { createdAt: 'desc' },
             take: 3,
         })
-        return { profile, projects }
+        const skills = await prisma.skill.findMany({
+            select: { name: true }
+        })
+        return { profile, projects, skills }
     } catch (e) {
         console.error(e)
-        return { profile: null, projects: [] }
+        return { profile: null, projects: [], skills: [] }
     }
 }
 
 export default async function HomePage() {
-    const { profile, projects } = await getData()
+    const { profile, projects, skills } = await getData()
 
     if (!profile) return null;
 
+    const socials = profile.socials as { github?: string; linkedin?: string; twitter?: string } | null;
+    const sameAs = [
+        socials?.github,
+        socials?.linkedin,
+        socials?.twitter
+    ].filter(Boolean) as string[];
+
+    const jsonLd = {
+        '@context': 'https://schema.org',
+        '@type': 'Person',
+        name: profile.name,
+        jobTitle: profile.role,
+        description: profile.bio,
+        url: 'https://elviencode.vercel.app',
+        image: profile.avatar,
+        sameAs: sameAs,
+        knowsAbout: skills.map(skill => skill.name),
+    }
+
     return (
-        <div className="flex flex-col gap-10 pb-24 w-full">
-            <HeroSection profile={profile} />
+        <>
+            <script
+                type="application/ld+json"
+                dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+            />
+            <div className="flex flex-col gap-10 pb-24 w-full">
+                <HeroSection profile={profile} />
 
-            <div className="w-full h-[1px] bg-border/50" />
+                <div className="w-full h-[1px] bg-border/50" />
 
-            <FeaturedProjectsSection projects={projects} />
+                <FeaturedProjectsSection projects={projects} />
 
-            <div className="w-full h-[1px] bg-border/50" />
+                <div className="w-full h-[1px] bg-border/50" />
 
-            <SkillsSection />
+                <SkillsSection />
 
-            <CtaSection />
-        </div>
+                <CtaSection />
+            </div>
+        </>
     )
 }
