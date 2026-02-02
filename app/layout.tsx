@@ -20,9 +20,10 @@ export const metadata: Metadata = {
     template: '%s | Elvien',
   },
   description:
-    'Personal portfolio of Elvien, a Full Stack Developer specializing in building modern web applications with Next.js and React.',
+    'Elviencode - Personal portfolio of Elvien, a Full Stack Developer specializing in building modern web applications with Next.js and React.',
   keywords: [
     'Elvien',
+    'Elviencode',
     'Full Stack Developer',
     'Next.js',
     'React',
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
   creator: 'Elvien',
   openGraph: {
     type: 'website',
-    locale: 'en_US',
+    locale: 'id_ID',
     url: 'https://elviencode.vercel.app',
     siteName: 'Elvien Portfolio',
     title: 'Elvien | Full Stack Developer',
