@@ -14,7 +14,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://elviencode.vercel.app'),
+  metadataBase: new URL('https://elvien.net'),
   title: {
     default: 'Elvien | Full Stack Developer',
     template: '%s | Elvien',
@@ -31,12 +31,12 @@ export const metadata: Metadata = {
     'Software Engineer',
     'Portfolio',
   ],
-  authors: [{ name: 'Elvien', url: 'https://elviencode.vercel.app' }],
+  authors: [{ name: 'Elvien', url: 'https://elvien.net' }],
   creator: 'Elvien',
   openGraph: {
     type: 'website',
     locale: 'id_ID',
-    url: 'https://elviencode.vercel.app',
+    url: 'https://elvien.net',
     siteName: 'Elvien Portfolio',
     title: 'Elvien | Full Stack Developer',
     description:

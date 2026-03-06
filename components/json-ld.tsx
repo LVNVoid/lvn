@@ -2,11 +2,11 @@ export default function JsonLd() {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
-    '@id': 'https://elviencode.vercel.app/#person',
+    '@id': 'https://elvien.net/#person',
 
     name: 'Elvien Aninditha Purnawan',
     alternateName: 'elviencode',
-    url: 'https://elviencode.vercel.app',
+    url: 'https://elvien.net',
 
     jobTitle: 'Software Engineer',
 
@@ -16,11 +16,11 @@ export default function JsonLd() {
     brand: {
       '@type': 'Brand',
       name: 'Elviencode',
-      url: 'https://elviencode.vercel.app',
+      url: 'https://elvien.net',
     },
 
     knowsAbout: [
-      'Full Stack Web Development',
+      'Full Stack Web Developer',
       'Frontend and Backend Engineering',
       'Modern JavaScript Frameworks',
       'Web Application Architecture',

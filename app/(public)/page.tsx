@@ -29,13 +29,13 @@ export const metadata: Metadata = {
   description:
     'Portfolio pribadi Elviencode, Software Engineer dan Full Stack Developer yang membangun website modern, cepat, dan SEO friendly menggunakan Next.js dan React.',
   alternates: {
-    canonical: 'https://elviencode.vercel.app',
+    canonical: 'https://elvien.net',
   },
   openGraph: {
     title: 'Elviencode – Software Engineer Portfolio',
     description:
       'Portfolio pribadi Elviencode, Software Engineer dan Full Stack Developer dengan fokus Next.js dan web modern.',
-    url: 'https://elviencode.vercel.app',
+    url: 'https://elvien.net',
     siteName: 'Elvien Portfolio',
     images: [
       {
@@ -77,7 +77,7 @@ export default async function HomePage() {
     name: profile.name,
     jobTitle: profile.role,
     description: profile.bio,
-    url: 'https://elviencode.vercel.app',
+    url: 'https://elvien.net',
     image: profile.avatar,
     sameAs: sameAs,
     knowsAbout: skills.map((skill) => skill.name),

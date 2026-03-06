@@ -1,11 +1,11 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: 'https://elviencode.vercel.app/',
+  siteUrl: 'https://elvien.net/',
   generateRobotsTxt: true,
   // optional
   // robotsTxtOptions: {
   //   additionalSitemaps: [
-  //     'https://elviencode.vercel.app/server-sitemap.xml', // <==== Add here
+  //     'https://elvien.net/server-sitemap.xml', // <==== Add here
   //   ],
   // },
 }
