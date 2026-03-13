@@ -5,7 +5,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "prisma generate && next build",
-    "postbuild": "next-sitemap",
     "start": "next start",
     "lint": "eslint",
     "seed": "tsx prisma/seed.ts"
@@ -62,7 +61,6 @@
     "babel-plugin-react-compiler": "1.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.0.10",
-    "next-sitemap": "^4.2.3",
     "prisma": "^7.2.0",
     "tailwindcss": "^4",
     "tsx": "^4.21.0",
