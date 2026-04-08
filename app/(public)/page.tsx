@@ -89,7 +89,7 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <div className="flex flex-col gap-10 pb-24 w-full">
+      <div className="flex flex-col gap-10 pb-24 ">
         <h1 className="sr-only">Elviencode – Software Engineer Portfolio</h1>
         <HeroSection profile={profile} />
 

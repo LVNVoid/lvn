@@ -1,31 +1,31 @@
-import { LayoutWrapper } from "@/components/layout/layout-wrapper";
-import { AnimatedBackground } from "@/components/ui/animated-background";
+import { LayoutWrapper } from '@/components/layout/layout-wrapper';
+import { AnimatedBackground } from '@/components/ui/animated-background';
 
-import prisma from "@/lib/prisma";
+import prisma from '@/lib/prisma';
 
 async function getProfile() {
-    try {
-        const profile = await prisma.profile.findFirst();
-        return profile;
-    } catch (error) {
-        console.error("Failed to fetch profile", error);
-        return null;
-    }
+  try {
+    const profile = await prisma.profile.findFirst();
+    return profile;
+  } catch (error) {
+    console.error('Failed to fetch profile', error);
+    return null;
+  }
 }
 
 export default async function PublicLayout({
-    children,
+  children,
 }: Readonly<{
-    children: React.ReactNode;
+  children: React.ReactNode;
 }>) {
-    const profile = await getProfile();
+  const profile = await getProfile();
 
-    return (
-        <>
-            <AnimatedBackground />
-            <LayoutWrapper profile={profile}>
-                {children}
-            </LayoutWrapper>
-        </>
-    );
+  return (
+    <div>
+      {/* <AnimatedBackground /> */}
+      <LayoutWrapper profile={profile}>
+        <div className="max-w-6xl mx-auto">{children}</div>
+      </LayoutWrapper>
+    </div>
+  );
 }
