@@ -15,20 +15,10 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { ArrowRight, ExternalLink, Github } from 'lucide-react';
 import Image from 'next/image';
-
-interface Project {
-  id: string;
-  title: string;
-  slug: string;
-  description: string;
-  tech: string[];
-  link?: string | null;
-  github?: string | null;
-  image?: string | null;
-}
+import type { Project } from '@/schemas/project-schema';
 
 interface ProjectsProps {
-  projects: Project[];
+  projects: readonly Project[];
   limit?: number;
   className?: string;
 }

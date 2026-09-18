@@ -60,10 +60,9 @@ export const authOptions: NextAuthOptions = {
         },
       };
     },
-    async jwt({ token, user: u }) {
-      if (u) {
-        const user = u as any; 
-        token.role = user.name; 
+    async jwt({ token, user }) {
+      if (user) {
+        token.role = (user as { name?: string | null }).name ?? "ADMIN";
       }
       return token;
     },

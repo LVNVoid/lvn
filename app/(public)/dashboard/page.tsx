@@ -6,8 +6,22 @@ import { GitHubCalendarWrapper } from "@/components/features/github/github-calen
 import { PageHeader } from '@/components/ui/page-header';
 import { LayoutDashboard } from 'lucide-react';
 
+interface GitHubEvent {
+  id: string;
+  type: string;
+  repo: {
+    name: string;
+  };
+  created_at: string;
+}
+
 export default async function DashboardPage() {
-  const activity = await getRecentActivity();
+  let activity: GitHubEvent[] = [];
+  try {
+    activity = await getRecentActivity();
+  } catch (error) {
+    console.error('Failed to load GitHub activity:', error);
+  }
 
   return (
     <div className="space-y-8">
@@ -39,7 +53,7 @@ export default async function DashboardPage() {
       </SlideUp>
       <SlideUp delay={0.4}>
         <StaggerContainer className="space-y-4">
-          {activity.slice(0, 10).map((event: any) => (
+          {activity.slice(0, 10).map((event: GitHubEvent) => (
             <SlideUp
               key={event.id}
               className="border rounded-lg p-4 bg-card/50"

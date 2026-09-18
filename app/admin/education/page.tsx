@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import prisma from '@/lib/prisma'
 import { Button } from '@/components/ui/button'
 import {
     Table,
@@ -9,18 +8,12 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table'
-import { Plus, GraduationCap } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { DeleteButton } from "@/components/admin/delete-button";
-
-async function getEducation() {
-    const education = await prisma.education.findMany({
-        orderBy: { createdAt: 'desc' },
-    })
-    return education
-}
+import { getEducations } from '@/services/education-service';
 
 export default async function EducationPage() {
-    const education = await getEducation()
+    const education = await getEducations()
 
     return (
         <div className="space-y-6">

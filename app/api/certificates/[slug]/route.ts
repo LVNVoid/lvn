@@ -50,7 +50,8 @@ export async function PUT(req: Request, props: { params: Promise<{ slug: string 
       },
     })
     return NextResponse.json(certificate)
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message || 'Failed to update certificate' }, { status: 500 })
+  } catch (error) {
+    const message = error instanceof Error ? error.message : 'Failed to update certificate'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }

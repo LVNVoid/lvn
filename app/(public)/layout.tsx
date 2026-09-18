@@ -1,17 +1,5 @@
 import { LayoutWrapper } from '@/components/layout/layout-wrapper';
-import { AnimatedBackground } from '@/components/ui/animated-background';
-
-import prisma from '@/lib/prisma';
-
-async function getProfile() {
-  try {
-    const profile = await prisma.profile.findFirst();
-    return profile;
-  } catch (error) {
-    console.error('Failed to fetch profile', error);
-    return null;
-  }
-}
+import { getProfile } from '@/services/profile-service';
 
 export default async function PublicLayout({
   children,
@@ -22,7 +10,6 @@ export default async function PublicLayout({
 
   return (
     <div>
-      {/* <AnimatedBackground /> */}
       <LayoutWrapper profile={profile}>
         <div className="max-w-6xl mx-auto">{children}</div>
       </LayoutWrapper>

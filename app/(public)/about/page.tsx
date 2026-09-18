@@ -1,9 +1,10 @@
 import { SlideUp } from '@/components/ui/animated';
 import { PageHeader } from '@/components/ui/page-header';
 import { GraduationCap, User } from 'lucide-react';
-import prisma from '@/lib/prisma';
+import { getProfile } from '@/services/profile-service';
+import { getEducations } from '@/services/education-service';
 import { Education } from '@/components/sections/education';
-import { Metadata } from 'next';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'About Me',
@@ -12,9 +13,10 @@ export const metadata: Metadata = {
 };
 
 export default async function AboutPage() {
-  const profile = await prisma.profile.findFirst();
-
-  if (!profile) return null;
+  const [profile, educations] = await Promise.all([
+    getProfile(),
+    getEducations(),
+  ]);
 
   return (
     <div className="space-y-6">
@@ -26,7 +28,9 @@ export default async function AboutPage() {
 
       <SlideUp delay={0.1}>
         <div className="prose dark:prose-invert">
-          <p className="text-lg leading-relaxed">{profile.bio}</p>
+          <p className="text-lg leading-relaxed">
+            {profile?.bio || 'Software Engineer and Full Stack Developer.'}
+          </p>
           <p className="mt-4 text-muted-foreground">
             I am a dedicated developer with a passion for creating elegant
             solutions to complex problems. My journey in tech has been driven by
@@ -44,7 +48,7 @@ export default async function AboutPage() {
       />
       <SlideUp delay={0.2}>
         <div className="prose dark:prose-invert">
-          <Education />
+          <Education educations={educations} />
         </div>
       </SlideUp>
     </div>

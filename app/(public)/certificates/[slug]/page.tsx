@@ -1,95 +1,89 @@
-import prisma from '@/lib/prisma'
-import { notFound } from 'next/navigation'
-import Image from 'next/image'
-import Link from 'next/link'
-import { Button } from '@/components/ui/button'
-import { ArrowLeft, ExternalLink, Calendar, Award } from 'lucide-react'
+import { notFound } from 'next/navigation';
+import Image from 'next/image';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ArrowLeft, ExternalLink, Calendar, Award } from 'lucide-react';
+import { getCertificateBySlug } from '@/services/certificate-service';
+import type { Metadata } from 'next';
 
 interface PageProps {
-    params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }
 
-import { Metadata } from 'next'
-
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-    const { slug } = await params
-    const certificate = await prisma.certificate.findUnique({
-        where: { slug },
-        select: { name: true, issuer: true, image: true }
-    })
+  const { slug } = await params;
+  const certificate = await getCertificateBySlug(slug);
 
-    if (!certificate) {
-        return {
-            title: 'Certificate Not Found',
-        }
-    }
-
+  if (!certificate) {
     return {
-        title: `${certificate.name} | Certificates`,
-        description: `Certificate for ${certificate.name} issued by ${certificate.issuer}.`,
-        openGraph: {
-            title: certificate.name,
-            description: `Certificate for ${certificate.name} issued by ${certificate.issuer}.`,
-            images: certificate.image ? [certificate.image] : [],
-        }
-    }
+      title: 'Certificate Not Found',
+    };
+  }
+
+  return {
+    title: `${certificate.name} | Certificates`,
+    description: `Certificate for ${certificate.name} issued by ${certificate.issuer}.`,
+    openGraph: {
+      title: certificate.name,
+      description: `Certificate for ${certificate.name} issued by ${certificate.issuer}.`,
+      images: certificate.image ? [certificate.image] : [],
+    },
+  };
 }
 
 export default async function CertificateDetailPage({ params }: PageProps) {
-    const { slug } = await params
-    const certificate = await prisma.certificate.findUnique({
-        where: { slug },
-    })
+  const { slug } = await params;
+  const certificate = await getCertificateBySlug(slug);
 
-    if (!certificate) {
-        notFound()
-    }
+  if (!certificate) {
+    notFound();
+  }
 
-    return (
-        <div className="container mx-auto max-w-4xl py-12 px-4">
-            <Button variant="outline" asChild className="mb-8">
-                <Link href="/certificates">
-                    <ArrowLeft className="mr-2 h-4 w-4" /> Back to Certificates
-                </Link>
-            </Button>
+  return (
+    <div className="container mx-auto max-w-4xl py-12 px-4">
+      <Button variant="outline" asChild className="mb-8">
+        <Link href="/certificates">
+          <ArrowLeft className="mr-2 h-4 w-4" /> Back to Certificates
+        </Link>
+      </Button>
 
-            <div className="grid md:grid-cols-2 gap-8 items-start">
-                <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted">
-                    {certificate.image ? (
-                        <Image
-                            src={certificate.image}
-                            alt={certificate.name}
-                            fill
-                            className="object-cover"
-                            priority
-                        />
-                    ) : (
-                        <div className="flex h-full items-center justify-center text-muted-foreground">
-                            <Award className="h-16 w-16 opacity-20" />
-                        </div>
-                    )}
-                </div>
-
-                <div className="space-y-6">
-                    <div>
-                        <h1 className="text-3xl font-bold tracking-tight mb-2">{certificate.name}</h1>
-                        <p className="text-xl text-muted-foreground">{certificate.issuer}</p>
-                    </div>
-
-                    <div className="flex items-center gap-2 text-muted-foreground">
-                        <Calendar className="h-4 w-4" />
-                        <span>Issued: {certificate.date}</span>
-                    </div>
-
-                    {certificate.url && (
-                        <Button asChild size="lg" className="w-full md:w-auto">
-                            <a href={certificate.url} target="_blank" rel="noreferrer">
-                                View Credential <ExternalLink className="ml-2 h-4 w-4" />
-                            </a>
-                        </Button>
-                    )}
-                </div>
+      <div className="grid md:grid-cols-2 gap-8 items-start">
+        <div className="relative aspect-4/3 w-full overflow-hidden rounded-xl border bg-muted">
+          {certificate.image ? (
+            <Image
+              src={certificate.image}
+              alt={certificate.name}
+              fill
+              className="object-cover"
+              priority
+            />
+          ) : (
+            <div className="flex h-full items-center justify-center text-muted-foreground">
+              <Award className="h-16 w-16 opacity-20" />
             </div>
+          )}
         </div>
-    )
+
+        <div className="space-y-6">
+          <div>
+            <h1 className="text-3xl font-bold tracking-tight mb-2">{certificate.name}</h1>
+            <p className="text-xl text-muted-foreground">{certificate.issuer}</p>
+          </div>
+
+          <div className="flex items-center gap-2 text-muted-foreground">
+            <Calendar className="h-4 w-4" />
+            <span>Issued: {certificate.date}</span>
+          </div>
+
+          {certificate.url && (
+            <Button asChild size="lg" className="w-full md:w-auto">
+              <a href={certificate.url} target="_blank" rel="noreferrer">
+                View Credential <ExternalLink className="ml-2 h-4 w-4" />
+              </a>
+            </Button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 }

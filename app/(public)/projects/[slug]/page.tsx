@@ -1,44 +1,35 @@
-
-
-import prisma from "@/lib/prisma"
-import { notFound } from "next/navigation"
-import { Metadata } from "next"
-import ProjectDetailClient from "./client"
+import { notFound } from "next/navigation";
+import { getProjectBySlug } from "@/services/project-service";
+import ProjectDetailClient from "./client";
+import type { Metadata } from "next";
 
 interface PageProps {
-    params: Promise<{ slug: string }>
+  params: Promise<{ slug: string }>;
 }
 
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
-    const { slug } = await props.params
-    const project = await prisma.project.findUnique({
-        where: { slug },
-        select: { title: true, description: true }
-    })
+  const { slug } = await props.params;
+  const project = await getProjectBySlug(slug);
 
-    if (!project) {
-        return {
-            title: 'Project Not Found',
-        }
-    }
-
+  if (!project) {
     return {
-        title: `${project.title} | Projects`,
-        description: project.description,
-    }
+      title: "Project Not Found",
+    };
+  }
+
+  return {
+    title: `${project.title} | Projects`,
+    description: project.description,
+  };
 }
 
 export default async function DetailProject(props: PageProps) {
-    const { slug } = await props.params
-    const project = await prisma.project.findUnique({
-        where: {
-            slug: slug,
-        }
-    })
+  const { slug } = await props.params;
+  const project = await getProjectBySlug(slug);
 
-    if (!project) {
-        notFound()
-    }
+  if (!project) {
+    notFound();
+  }
 
-    return <ProjectDetailClient project={project} />
+  return <ProjectDetailClient project={project} />;
 }

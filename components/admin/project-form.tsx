@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { projectsService } from '@/services/projects'
+import { createProjectAction, updateProjectAction } from '@/actions/project-actions'
+import type { Project } from '@/schemas/project-schema'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
@@ -13,17 +14,7 @@ import { Badge } from '@/components/ui/badge'
 import toast from 'react-hot-toast'
 import { useImageUpload } from '@/hooks/use-image-upload'
 
-interface Project {
-    id?: string
-    title: string
-    description: string
-    tech: string[]
-    link?: string | null
-    github?: string | null
-    image?: string | null
-}
-
-export default function ProjectForm({ initialData }: { initialData?: Project }) {
+export default function ProjectForm({ initialData }: { initialData?: Partial<Project> }) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
@@ -33,19 +24,17 @@ export default function ProjectForm({ initialData }: { initialData?: Project }) 
         handleFileChange,
         handleRemoveImage,
         uploadImage
-    } = useImageUpload(initialData?.image)
+    } = useImageUpload(initialData?.image ?? undefined)
 
-    const [formData, setFormData] = useState<Project>(
-        initialData || {
-            title: '',
-            description: '',
-            tech: [],
-            link: '',
-            github: '',
-            image: '',
-        }
-    )
-    const [techInput, setTechInput] = useState(initialData?.tech.join(', ') || '')
+    const [formData, setFormData] = useState({
+        title: initialData?.title || '',
+        description: initialData?.description || '',
+        tech: initialData?.tech || [],
+        link: initialData?.link || '',
+        github: initialData?.github || '',
+        image: initialData?.image || '',
+    })
+    const [techInput, setTechInput] = useState(initialData?.tech?.join(', ') || '')
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -72,18 +61,21 @@ export default function ProjectForm({ initialData }: { initialData?: Project }) 
 
             const payload = { ...formData, image: imageUrl }
 
-            if (initialData?.id) {
-                await projectsService.update(initialData.id, payload)
-            } else {
-                await projectsService.create(payload)
+            const result = initialData?.id
+                ? await updateProjectAction(initialData.id, payload)
+                : await createProjectAction(payload)
+
+            if (!result.success) {
+                toast.error(result.error.message)
+                return
             }
 
             router.push('/admin/projects')
             router.refresh()
-            toast.success(initialData ? 'Project updated successfully' : 'Project created successfully')
-        } catch (error: any) {
+            toast.success(initialData?.id ? 'Project updated successfully' : 'Project created successfully')
+        } catch (error) {
             console.error('Error saving project:', error)
-            toast.error(error.response?.data?.error || 'Failed to save project')
+            toast.error('Failed to save project')
         } finally {
             setLoading(false)
         }

@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
-import { certificatesService } from '@/services/certificates'
+import { createCertificateAction, updateCertificateAction } from '@/actions/certificate-actions'
+import type { Certificate } from '@/schemas/certificate-schema'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
@@ -11,17 +12,7 @@ import { Loader2, Upload, X } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useImageUpload } from '@/hooks/use-image-upload'
 
-interface Certificate {
-    id?: string
-    slug?: string
-    name: string
-    issuer: string
-    date: string
-    url?: string
-    image?: string
-}
-
-export default function CertificateForm({ initialData }: { initialData?: Certificate }) {
+export default function CertificateForm({ initialData }: { initialData?: Partial<Certificate> }) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
@@ -30,17 +21,15 @@ export default function CertificateForm({ initialData }: { initialData?: Certifi
         previewUrl,
         handleFileChange,
         uploadImage
-    } = useImageUpload(initialData?.image)
+    } = useImageUpload(initialData?.image ?? undefined)
 
-    const [formData, setFormData] = useState<Certificate>(
-        initialData || {
-            name: '',
-            issuer: '',
-            date: '',
-            url: '',
-            image: '',
-        }
-    )
+    const [formData, setFormData] = useState({
+        name: initialData?.name || '',
+        issuer: initialData?.issuer || '',
+        date: initialData?.date || '',
+        url: initialData?.url || '',
+        image: initialData?.image || '',
+    })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -61,18 +50,21 @@ export default function CertificateForm({ initialData }: { initialData?: Certifi
 
             const payload = { ...formData, image: imageUrl }
 
-            if (initialData?.slug) {
-                await certificatesService.update(initialData.slug, payload)
-            } else {
-                await certificatesService.create(payload)
+            const result = initialData?.slug
+                ? await updateCertificateAction(initialData.slug, payload)
+                : await createCertificateAction(payload)
+
+            if (!result.success) {
+                toast.error(result.error.message)
+                return
             }
 
             router.push('/admin/certificates')
             router.refresh()
-            toast.success(initialData ? 'Certificate updated successfully' : 'Certificate created successfully')
-        } catch (error: any) {
+            toast.success(initialData?.slug ? 'Certificate updated successfully' : 'Certificate created successfully')
+        } catch (error) {
             console.error('Error saving certificate:', error)
-            toast.error(error.response?.data?.error || 'Failed to save certificate')
+            toast.error('Failed to save certificate')
         } finally {
             setLoading(false)
         }

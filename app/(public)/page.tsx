@@ -1,28 +1,13 @@
-import prisma from '@/lib/prisma';
 import { HeroSection } from '@/components/features/home/hero-section';
 import { SkillsSection } from '@/components/features/home/skills-section';
 import { FeaturedProjectsSection } from '@/components/features/home/featured-projects-section';
 import { CtaSection } from '@/components/features/home/cta-section';
+import { getProfile } from '@/services/profile-service';
+import { getFeaturedProjects } from '@/services/project-service';
+import { getSkills } from '@/services/skill-service';
 import type { Metadata } from 'next';
 
 export const revalidate = 60;
-
-async function getData() {
-  try {
-    const profile = await prisma.profile.findFirst();
-    const projects = await prisma.project.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 3,
-    });
-    const skills = await prisma.skill.findMany({
-      select: { name: true },
-    });
-    return { profile, projects, skills };
-  } catch (e) {
-    console.error(e);
-    return { profile: null, projects: [], skills: [] };
-  }
-}
 
 export const metadata: Metadata = {
   title: 'Elviencode – Software Engineer Portfolio',
@@ -58,15 +43,15 @@ export const metadata: Metadata = {
 };
 
 export default async function HomePage() {
-  const { profile, projects, skills } = await getData();
+  const [profile, projects, skills] = await Promise.all([
+    getProfile(),
+    getFeaturedProjects(3),
+    getSkills(),
+  ]);
 
   if (!profile) return null;
 
-  const socials = profile.socials as {
-    github?: string;
-    linkedin?: string;
-    twitter?: string;
-  } | null;
+  const socials = profile.socials;
   const sameAs = [socials?.github, socials?.linkedin, socials?.twitter].filter(
     Boolean,
   ) as string[];

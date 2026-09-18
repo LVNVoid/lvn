@@ -16,6 +16,7 @@ import {
   Copyright,
 } from 'lucide-react';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
+import type { Profile } from '@/schemas/profile-schema';
 
 export const navItems = [
   { name: 'Home', href: '/', icon: Home },
@@ -28,7 +29,7 @@ export const navItems = [
 
 interface SidebarProps extends React.HTMLAttributes<HTMLElement> {
   onNavigate?: () => void;
-  profile: any;
+  profile: Profile | null;
 }
 
 export function Sidebar({ className, onNavigate, profile }: SidebarProps) {

@@ -64,8 +64,9 @@ export async function POST(req: Request) {
     })
     console.log("Certificate created:", certificate);
     return NextResponse.json(certificate)
-  } catch (error: any) {
+  } catch (error) {
     console.error("Certificate creation error:", error);
-    return NextResponse.json({ error: error.message || 'Failed to create certificate' }, { status: 500 })
+    const message = error instanceof Error ? error.message : 'Failed to create certificate'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }

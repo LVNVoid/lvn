@@ -5,9 +5,10 @@ import TextType from '@/components/ui/text-type';
 import { buttonVariants } from '@/components/ui/button';
 import { Download } from 'lucide-react';
 import { motion } from 'framer-motion';
+import type { Profile } from '@/schemas/profile-schema';
 
 interface HeroSectionProps {
-  profile: any;
+  profile: Profile;
 }
 
 export function HeroSection({ profile }: HeroSectionProps) {

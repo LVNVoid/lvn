@@ -2,15 +2,11 @@
 
 import Squares from "./squares";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useMounted } from "@/hooks/use-mounted";
 
 export function AnimatedBackground() {
     const { resolvedTheme } = useTheme();
-    const [mounted, setMounted] = useState(false);
-
-    useEffect(() => {
-        setMounted(true);
-    }, []);
+    const mounted = useMounted();
 
     if (!mounted) return <div className="fixed inset-0 -z-10 h-full w-full bg-background" />;
 

@@ -4,14 +4,16 @@ import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
+import type { Profile } from "@/schemas/profile-schema";
 
 interface NavbarProps {
     isOpen: boolean;
     onToggle: () => void;
-    profile: any;
+    profile: Profile | null;
 }
 
 export function Navbar({ isOpen, onToggle, profile }: NavbarProps) {
+    if (!profile) return null;
 
     return (
         <div className="lg:hidden sticky top-0 left-0 right-0 h-16 border-b border-border/40 bg-background/80 backdrop-blur-md z-50 flex items-center px-4 justify-between">

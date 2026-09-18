@@ -1,31 +1,24 @@
 'use client'
 
 import { useState } from 'react'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { createSkillAction } from '@/actions/skill-actions'
+import type { Skill } from '@/schemas/skill-schema'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
 import { Loader2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
-interface Skill {
-    id?: string
-    name: string
-    category?: string
-}
-
-export default function SkillForm({ initialData }: { initialData?: Skill }) {
+export default function SkillForm({ initialData }: { initialData?: Partial<Skill> }) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
-    const [formData, setFormData] = useState<Skill>(
-        initialData || {
-            name: '',
-            category: '',
-        }
-    )
+    const [formData, setFormData] = useState({
+        name: initialData?.name || '',
+        category: initialData?.category || '',
+    })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -39,18 +32,22 @@ export default function SkillForm({ initialData }: { initialData?: Skill }) {
         try {
             if (initialData?.id) {
                 toast.error("Update not implemented yet, please delete and recreate.")
-                setLoading(false) // Reset loading as we are returning
+                setLoading(false)
                 return
-            } else {
-                await axios.post('/api/skills', formData)
+            }
+
+            const result = await createSkillAction(formData)
+            if (!result.success) {
+                toast.error(result.error.message)
+                return
             }
 
             router.push('/admin/skills')
             router.refresh()
-            toast.success(initialData ? 'Skill updated successfully' : 'Skill created successfully')
-        } catch (error: any) {
+            toast.success('Skill created successfully')
+        } catch (error) {
             console.error('Error saving skill:', error)
-            toast.error(error.response?.data?.error || 'Failed to save skill')
+            toast.error('Failed to save skill')
         } finally {
             setLoading(false)
         }

@@ -3,7 +3,8 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { profileService } from '@/services/profile'
+import { updateProfileAction } from '@/actions/profile-actions'
+import type { Profile } from '@/schemas/profile-schema'
 import { useForm } from 'react-hook-form'
 import * as z from 'zod'
 import { Trash2, Upload, Loader2, Save } from 'lucide-react'
@@ -47,22 +48,7 @@ const profileSchema = z.object({
 
 type ProfileFormValues = z.infer<typeof profileSchema>
 
-interface ProfileData {
-    id?: string
-    name: string
-    role: string
-    bio: string
-    location: string
-    email: string
-    avatar: string
-    socials: {
-        github?: string
-        linkedin?: string
-        twitter?: string
-    }
-}
-
-export default function ProfileForm({ initialData }: { initialData?: ProfileData }) {
+export default function ProfileForm({ initialData }: { initialData?: Profile | null }) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const {
@@ -120,7 +106,11 @@ export default function ProfileForm({ initialData }: { initialData?: ProfileData
                 avatar: avatarUrl || '',
             }
 
-            await profileService.update(payload)
+            const result = await updateProfileAction(payload)
+            if (!result.success) {
+                toast.error(result.error.message)
+                return
+            }
 
             router.refresh()
             toast.success('Profile updated successfully!')

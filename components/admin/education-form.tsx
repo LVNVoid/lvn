@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
+import { createEducationAction, updateEducationAction } from '@/actions/education-actions'
+import type { Education } from '@/schemas/education-schema'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
@@ -11,26 +12,16 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter }
 import { Loader2 } from 'lucide-react'
 import toast from 'react-hot-toast'
 
-interface Education {
-    id?: string
-    school: string
-    degree: string
-    year: string
-    description?: string
-}
-
-export default function EducationForm({ initialData }: { initialData?: Education }) {
+export default function EducationForm({ initialData }: { initialData?: Partial<Education> }) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState('')
-    const [formData, setFormData] = useState<Education>(
-        initialData || {
-            school: '',
-            degree: '',
-            year: '',
-            description: '',
-        }
-    )
+    const [formData, setFormData] = useState({
+        school: initialData?.school || '',
+        degree: initialData?.degree || '',
+        year: initialData?.year || '',
+        description: initialData?.description || '',
+    })
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         setFormData({ ...formData, [e.target.name]: e.target.value })
@@ -42,18 +33,21 @@ export default function EducationForm({ initialData }: { initialData?: Education
         setError('')
 
         try {
-            if (initialData?.id) {
-                toast.error("Update not implemented yet, please delete and recreate.")
+            const result = initialData?.id
+                ? await updateEducationAction(initialData.id, formData)
+                : await createEducationAction(formData)
+
+            if (!result.success) {
+                toast.error(result.error.message)
                 return
-            } else {
-                await axios.post('/api/education', formData)
-                router.push('/admin/education')
-                router.refresh()
-                toast.success('Education created successfully')
             }
-        } catch (error: any) {
+
+            router.push('/admin/education')
+            router.refresh()
+            toast.success(initialData?.id ? 'Education updated successfully' : 'Education created successfully')
+        } catch (error) {
             console.error('Error saving education:', error)
-            toast.error(error.response?.data?.error || 'Failed to save education')
+            toast.error('Failed to save education')
         } finally {
             setLoading(false)
         }

@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import prisma from '@/lib/prisma'
 import { Button } from '@/components/ui/button'
 import {
     Table,
@@ -9,16 +8,10 @@ import {
     TableHeader,
     TableRow,
 } from '@/components/ui/table'
-import { Plus, Tag } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { Badge } from '@/components/ui/badge'
 import { DeleteButton } from "@/components/admin/delete-button";
-
-async function getSkills() {
-    const skills = await prisma.skill.findMany({
-        orderBy: { createdAt: 'desc' },
-    })
-    return skills
-}
+import { getSkills } from '@/services/skill-service';
 
 export default async function SkillsPage() {
     const skills = await getSkills()

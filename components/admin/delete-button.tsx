@@ -1,9 +1,12 @@
 'use client'
 
-import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Trash } from 'lucide-react'
+import { deleteProjectAction } from '@/actions/project-actions'
+import { deleteCertificateAction } from '@/actions/certificate-actions'
+import { deleteSkillAction } from '@/actions/skill-actions'
+import { deleteEducationAction } from '@/actions/education-actions'
 import {
     AlertDialog,
     AlertDialogAction,
@@ -28,10 +31,21 @@ export function DeleteButton({ id, section, itemName = "Item" }: DeleteButtonPro
 
     const handleDelete = async () => {
         try {
-            await axios.delete(`/api/${section}/${id}`)
+            let result;
+            if (section === 'projects') result = await deleteProjectAction(id);
+            else if (section === 'certificates') result = await deleteCertificateAction(id);
+            else if (section === 'skills') result = await deleteSkillAction(id);
+            else if (section === 'education') result = await deleteEducationAction(id);
+
+            if (result && !result.success) {
+                toast.error(result.error.message);
+                return;
+            }
+
             toast.success(`${itemName} deleted successfully`)
             router.refresh()
         } catch (error) {
+            console.error(`Failed to delete ${itemName.toLowerCase()}:`, error);
             toast.error(`Failed to delete ${itemName.toLowerCase()}`)
         }
     }

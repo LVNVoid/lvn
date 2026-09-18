@@ -6,9 +6,10 @@ import { Button } from '@/components/ui/button';
 import { PageHeader } from '@/components/ui/page-header';
 import { ArrowRight, FolderOpen } from 'lucide-react';
 import Link from 'next/link';
+import type { Project } from '@/schemas/project-schema';
 
 interface FeaturedProjectsSectionProps {
-    projects: any[];
+    projects: readonly Project[];
 }
 
 export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionProps) {

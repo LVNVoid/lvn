@@ -34,8 +34,9 @@ export async function POST(req: Request) {
       ).end(buffer);
     });    
     return NextResponse.json(result)
-  } catch (error: any) {
+  } catch (error) {
     console.error("Upload route error:", error);
-    return NextResponse.json({ error: error.message || 'Upload failed' }, { status: 500 })
+    const message = error instanceof Error ? error.message : 'Upload failed'
+    return NextResponse.json({ error: message }, { status: 500 })
   }
 }

@@ -9,20 +9,23 @@ import { Navbar } from '@/components/layout/navbar';
 import { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import { usePathname } from 'next/navigation';
+import type { Profile } from '@/schemas/profile-schema';
 
 export function LayoutWrapper({
   children,
   profile,
 }: {
   children: React.ReactNode;
-  profile: any;
+  profile: Profile | null;
 }) {
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const pathname = usePathname();
+  const [prevPathname, setPrevPathname] = useState(pathname);
 
-  useEffect(() => {
+  if (prevPathname !== pathname) {
+    setPrevPathname(pathname);
     setIsMobileOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     if (isMobileOpen) {

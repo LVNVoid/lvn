@@ -16,7 +16,6 @@ import {
 } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Lock } from 'lucide-react';
-import { AnimatedBackground } from '@/components/ui/animated-background';
 import { motion } from 'framer-motion';
 
 export default function LoginPage() {
@@ -44,7 +43,7 @@ export default function LoginPage() {
       } else {
         router.push('/admin');
       }
-    } catch (err) {
+    } catch {
       setError('An error occurred. Please try again.');
       setLoading(false);
     }

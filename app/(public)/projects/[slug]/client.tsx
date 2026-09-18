@@ -7,19 +7,7 @@ import { motion } from "framer-motion"
 import { ArrowLeft, Calendar, ExternalLink, Github, Layers } from "lucide-react"
 import Image from "next/image"
 import Link from "next/link"
-
-interface Project {
-    id: string
-    title: string
-    slug: string
-    description: string
-    tech: string[]
-    link: string | null
-    github: string | null
-    image: string | null
-    createdAt: Date
-    updatedAt: Date
-}
+import type { Project } from "@/schemas/project-schema"
 
 export default function ProjectDetailClient({ project }: { project: Project }) {
     return (
@@ -71,10 +59,12 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
                     >
                         <span className="flex items-center gap-1.5 bg-secondary/50 backdrop-blur-md px-3 py-1 rounded-full text-sm">
                             <Calendar className="h-3.5 w-3.5" />
-                            {new Date(project.createdAt).toLocaleDateString(undefined, {
-                                year: 'numeric',
-                                month: 'long',
-                            })}
+                            {project.createdAt
+                              ? new Date(project.createdAt).toLocaleDateString(undefined, {
+                                  year: 'numeric',
+                                  month: 'long',
+                                })
+                              : '-'}
                         </span>
                     </motion.div>
                 </div>

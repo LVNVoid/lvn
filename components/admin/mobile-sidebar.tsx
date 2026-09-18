@@ -1,17 +1,13 @@
 'use client'
 
 import { Menu } from 'lucide-react'
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet'
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { AdminSidebar } from '@/components/admin/sidebar'
 import { Button } from '@/components/ui/button'
-import { useState, useEffect } from 'react'
+import { useMounted } from '@/hooks/use-mounted'
 
 export const MobileSidebar = () => {
-    const [isMounted, setIsMounted] = useState(false)
-
-    useEffect(() => {
-        setIsMounted(true)
-    }, [])
+    const isMounted = useMounted()
 
     if (!isMounted) {
         return null

@@ -1,9 +1,8 @@
 import { Projects } from '@/components/sections/projects';
 import { PageHeader } from '@/components/ui/page-header';
 import { Cuboid } from 'lucide-react';
-import { Metadata } from 'next';
-
-import prisma from '@/lib/prisma';
+import { getProjects } from '@/services/project-service';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Projects',
@@ -14,11 +13,7 @@ export const metadata: Metadata = {
 export const revalidate = 60;
 
 export default async function ProjectsPage() {
-  const projects = await prisma.project.findMany({
-    orderBy: {
-      createdAt: 'desc',
-    },
-  });
+  const projects = await getProjects();
 
   return (
     <div className="space-y-6">
