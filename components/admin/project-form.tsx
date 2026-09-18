@@ -65,7 +65,9 @@ export default function ProjectForm({ initialData }: { initialData?: Partial<Pro
                 : await createProjectAction(payload)
 
             if (!result.success) {
-                toast.error(result.error.message)
+                const details = (result.error as { details?: Array<{ field: string; message: string }> })?.details
+                const detailMsg = details?.length ? details.map(d => `${d.field}: ${d.message}`).join(', ') : null
+                toast.error(detailMsg || result.error.message)
                 return
             }
 

@@ -1,12 +1,29 @@
 import { z } from "zod";
 
+const flexibleUrl = z
+  .string()
+  .trim()
+  .transform((val) => {
+    if (!val) return "";
+    if (!/^https?:\/\//i.test(val)) {
+      return `https://${val}`;
+    }
+    return val;
+  })
+  .refine((val) => val === "" || /^https?:\/\/[^\s$.?#].[^\s]*$/i.test(val), {
+    message: "Please provide a valid URL.",
+  })
+  .nullable()
+  .optional()
+  .or(z.literal(""));
+
 export const certificateSchema = z.object({
   id: z.string().cuid(),
-  name: z.string().min(1, "Nama sertifikat wajib diisi"),
-  slug: z.string().min(1, "Slug wajib diisi"),
-  issuer: z.string().min(1, "Penerbit sertifikat wajib diisi"),
-  date: z.string().min(1, "Tanggal sertifikat wajib diisi"),
-  url: z.string().url("URL kredensial tidak valid").nullable().optional().or(z.literal("")),
+  name: z.string().min(1, "Certificate name is required"),
+  slug: z.string().min(1, "Slug is required"),
+  issuer: z.string().min(1, "Issuer name is required"),
+  date: z.string().min(1, "Certificate date is required"),
+  url: flexibleUrl,
   image: z.string().nullable().optional().or(z.literal("")),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 export const skillSchema = z.object({
   id: z.string().cuid(),
-  name: z.string().min(1, "Nama keahlian wajib diisi"),
+  name: z.string().min(1, "Skill name is required"),
   category: z.string().nullable().optional(),
   createdAt: z.date().optional(),
   updatedAt: z.date().optional(),
