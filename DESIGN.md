@@ -6,12 +6,12 @@ colors:
   primary: "#0F766E"
   primary-hover: "#115E59"
   accent: "#14B8A6"
-  background: "#090D16"
-  surface: "#0F172A"
-  surface-card: "#131E36"
+  background: "#000000"
+  surface: "#0A0A0A"
+  surface-card: "#0D0D0D"
   text-primary: "#F8FAFC"
   text-muted: "#94A3B8"
-  border: "#1E293B"
+  border: "#212121"
 typography:
   display:
     fontFamily: Geist, -apple-system, BlinkMacSystemFont, sans-serif

@@ -54,7 +54,7 @@ export const AdminSidebar = () => {
   const pathname = usePathname();
 
   return (
-    <div className="space-y-4 py-4 flex flex-col bg-card border-r border-border/80 h-full text-foreground">
+    <div className="space-y-4 py-4 flex flex-col bg-sidebar border-r border-border/80 h-full text-foreground">
       <div className="px-4 py-2 flex-1">
         <Link
           href="/admin"

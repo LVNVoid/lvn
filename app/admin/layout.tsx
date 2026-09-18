@@ -17,7 +17,7 @@ export default async function AdminLayout({
 
   return (
     <div className="h-full relative bg-background">
-      <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-[80] border-r border-border/80 bg-card">
+      <div className="hidden h-full md:flex md:w-72 md:flex-col md:fixed md:inset-y-0 z-[80] border-r border-border/80 bg-sidebar">
         <AdminSidebar />
       </div>
       <main className="md:pl-72 h-full min-h-screen transition-all duration-300 ease-in-out">
