@@ -41,6 +41,8 @@ model Project {
   image       String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([createdAt(sort: Desc)])
 }
 
 model Skill {
@@ -49,6 +51,8 @@ model Skill {
   category  String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([createdAt(sort: Desc)])
 }
 
 model Education {
@@ -59,6 +63,8 @@ model Education {
   description String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+
+  @@index([createdAt(sort: Desc)])
 }
 
 model Certificate {
@@ -71,4 +77,6 @@ model Certificate {
   image     String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  @@index([createdAt(sort: Desc)])
 }

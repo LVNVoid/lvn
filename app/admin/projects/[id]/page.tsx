@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import prisma from '@/lib/prisma'
 import { notFound } from 'next/navigation'
 import { Button } from '@/components/ui/button'
@@ -98,10 +99,11 @@ export default async function ProjectDetailPage(props: PageProps) {
                             <div className="rounded-lg overflow-hidden border bg-muted/50 aspect-video relative flex items-center justify-center">
                                 {project.image ? (
                                     <div className="relative w-full h-full">
-                                        <img
+                                        <Image
                                             src={project.image}
                                             alt={project.title}
-                                            className="w-full h-full object-cover"
+                                            fill
+                                            className="object-cover"
                                         />
                                     </div>
                                 ) : (

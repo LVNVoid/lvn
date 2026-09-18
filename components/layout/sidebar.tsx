@@ -56,6 +56,7 @@ export function Sidebar({ className, onNavigate, profile }: SidebarProps) {
             fill
             sizes="100px"
             className="object-cover"
+            priority
           />
         </div>
         <div>

@@ -25,6 +25,7 @@ export function Navbar({ isOpen, onToggle, profile }: NavbarProps) {
                         fill
                         sizes="60px"
                         className="object-cover"
+                        priority
                     />
                 </div>
 

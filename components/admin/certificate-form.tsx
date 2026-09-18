@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { createCertificateAction, updateCertificateAction } from '@/actions/certificate-actions'
@@ -8,14 +9,13 @@ import type { Certificate } from '@/schemas/certificate-schema'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from '@/components/ui/card'
-import { Loader2, Upload, X } from 'lucide-react'
+import { Loader2, Upload } from 'lucide-react'
 import toast from 'react-hot-toast'
 import { useImageUpload } from '@/hooks/use-image-upload'
 
 export default function CertificateForm({ initialData }: { initialData?: Partial<Certificate> }) {
     const router = useRouter()
     const [loading, setLoading] = useState(false)
-    const [error, setError] = useState('')
     const {
         imageFile,
         previewUrl,
@@ -38,7 +38,6 @@ export default function CertificateForm({ initialData }: { initialData?: Partial
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         setLoading(true)
-        setError('')
 
         try {
             let imageUrl = formData.image
@@ -143,10 +142,12 @@ export default function CertificateForm({ initialData }: { initialData?: Partial
 
                     {(imageFile || previewUrl) && (
                         <div className="mt-4 relative w-full h-48 bg-muted/30 rounded-lg border-2 border-dashed border-muted flex items-center justify-center overflow-hidden">
-                            <img
+                            <Image
                                 src={previewUrl || ''}
                                 alt="Preview"
-                                className="h-full w-full object-contain"
+                                fill
+                                className="object-contain"
+                                unoptimized
                             />
                             {imageFile && (
                                 <div className="absolute bottom-2 right-2 bg-black/75 text-white text-xs px-2 py-1 rounded-md flex items-center">

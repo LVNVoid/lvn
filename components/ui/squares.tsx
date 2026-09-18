@@ -145,7 +145,13 @@ const Squares: React.FC<SquaresProps> = ({
 
         canvas.addEventListener('mousemove', handleMouseMove);
         canvas.addEventListener('mouseleave', handleMouseLeave);
-        requestRef.current = requestAnimationFrame(updateAnimation);
+
+        const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+            drawGrid();
+        } else {
+            requestRef.current = requestAnimationFrame(updateAnimation);
+        }
 
         return () => {
             window.removeEventListener('resize', resizeCanvas);
