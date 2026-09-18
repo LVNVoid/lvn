@@ -19,7 +19,7 @@ export async function updateProfileAction(
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -29,7 +29,7 @@ export async function updateProfileAction(
       success: false,
       error: {
         code: "VALIDATION_ERROR",
-        message: "Data profil tidak valid.",
+        message: "Invalid profile payload.",
         details: parsed.error.issues.map((i) => ({
           field: i.path.join("."),
           message: i.message,
@@ -61,7 +61,7 @@ export async function updateProfileAction(
         try {
           await deleteFromCloudinary(firstProfile.avatar);
         } catch (e) {
-          console.error("Gagal menghapus avatar lama dari Cloudinary:", e);
+          console.error("Failed to delete legacy avatar from Cloudinary:", e);
         }
       }
     } else {
@@ -102,7 +102,7 @@ export async function updateProfileAction(
     console.error("Error updating profile:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal memperbarui profil." },
+      error: { code: "SERVER_ERROR", message: "Failed to update profile." },
     };
   }
 }

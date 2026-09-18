@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   creator: 'Elvien',
   openGraph: {
     type: 'website',
-    locale: 'id_ID',
+    locale: 'en_US',
     url: 'https://elvien.net',
     siteName: 'Elvien Portfolio',
     title: 'Elvien | Full Stack Developer',

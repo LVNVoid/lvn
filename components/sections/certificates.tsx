@@ -14,7 +14,7 @@ export function Certificates({ certificates }: CertificatesProps) {
   if (!certificates || certificates.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-border/80 p-8 text-center text-sm text-muted-foreground">
-        Belum ada sertifikat yang ditambahkan.
+        No certificates added yet.
       </div>
     );
   }

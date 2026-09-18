@@ -76,6 +76,26 @@ const SPECIFIC_PROJECT_HIGHLIGHTS: Record<string, EngineeringHighlight[]> = {
         "Centralized persistence layer designed for consistent record handling and predictable data querying.",
     },
   ],
+  "kopi-sangkara-pos": [
+    {
+      icon: "cpu",
+      title: "Thermal ESC/POS 58mm & Web Bluetooth",
+      description:
+        "Native receipt generation directly in-browser communicating with 58mm thermal printers over Web Bluetooth with QR-based digital invoice fallback.",
+    },
+    {
+      icon: "layout",
+      title: "Hybrid Modular Next.js 16 Architecture",
+      description:
+        "Feature-driven kebab-case structure with server-only database services, Zero-any TypeScript enforcement, and tablet/iPad touch-first responsive layout.",
+    },
+    {
+      icon: "shield",
+      title: "Financial Reconciliation & Cash Audit",
+      description:
+        "Structured cashier shift cycles, automated drawer cash variance auditing, Zod validation contracts, and complete isolation of payment telemetry.",
+    },
+  ],
 };
 
 export function getProjectHighlights(project: Project): EngineeringHighlight[] {

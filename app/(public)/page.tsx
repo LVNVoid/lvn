@@ -12,14 +12,14 @@ export const revalidate = 60;
 export const metadata: Metadata = {
   title: 'Elviencode – Software Engineer Portfolio',
   description:
-    'Portfolio pribadi Elviencode, Software Engineer dan Full Stack Developer yang membangun website modern, cepat, dan SEO friendly menggunakan Next.js dan React.',
+    'Personal portfolio of Elviencode, Software Engineer and Full Stack Developer building modern, resilient, high-performance web applications with Next.js and TypeScript.',
   alternates: {
     canonical: 'https://elvien.net',
   },
   openGraph: {
     title: 'Elviencode – Software Engineer Portfolio',
     description:
-      'Portfolio pribadi Elviencode, Software Engineer dan Full Stack Developer dengan fokus Next.js dan web modern.',
+      'Personal portfolio of Elviencode, Software Engineer and Full Stack Developer specializing in Next.js and modern web systems.',
     url: 'https://elvien.net',
     siteName: 'Elvien Portfolio',
     images: [
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'Elviencode – Software Engineer Portfolio',
     description:
-      'Portfolio pribadi Elviencode, Software Engineer dan Full Stack Developer dengan fokus Next.js.',
+      'Personal portfolio of Elviencode, Software Engineer and Full Stack Developer specializing in Next.js and TypeScript.',
     images: ['/og-image.jpg'],
     creator: '@elviencode',
   },

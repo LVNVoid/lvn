@@ -19,7 +19,7 @@ export async function createProjectAction(
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -29,7 +29,7 @@ export async function createProjectAction(
       success: false,
       error: {
         code: "VALIDATION_ERROR",
-        message: "Data proyek tidak valid.",
+        message: "Invalid project payload.",
         details: parsed.error.issues.map((i) => ({
           field: i.path.join("."),
           message: i.message,
@@ -76,7 +76,7 @@ export async function createProjectAction(
     console.error("Error creating project:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal menyimpan proyek ke database." },
+      error: { code: "SERVER_ERROR", message: "Failed to save project to database." },
     };
   }
 }
@@ -89,7 +89,7 @@ export async function updateProjectAction(
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -99,7 +99,7 @@ export async function updateProjectAction(
       success: false,
       error: {
         code: "VALIDATION_ERROR",
-        message: "Data pembaruan proyek tidak valid.",
+        message: "Invalid project update payload.",
         details: parsed.error.issues.map((i) => ({
           field: i.path.join("."),
           message: i.message,
@@ -148,7 +148,7 @@ export async function updateProjectAction(
     console.error("Error updating project:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal memperbarui proyek." },
+      error: { code: "SERVER_ERROR", message: "Failed to update project." },
     };
   }
 }
@@ -158,7 +158,7 @@ export async function deleteProjectAction(id: string): Promise<ApiResponse<{ id:
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -175,7 +175,7 @@ export async function deleteProjectAction(id: string): Promise<ApiResponse<{ id:
     console.error("Error deleting project:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal menghapus proyek." },
+      error: { code: "SERVER_ERROR", message: "Failed to delete project." },
     };
   }
 }

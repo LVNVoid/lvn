@@ -18,7 +18,7 @@ export async function createEducationAction(
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -28,7 +28,7 @@ export async function createEducationAction(
       success: false,
       error: {
         code: "VALIDATION_ERROR",
-        message: "Data pendidikan tidak valid.",
+        message: "Invalid education payload.",
         details: parsed.error.issues.map((i) => ({
           field: i.path.join("."),
           message: i.message,
@@ -67,7 +67,7 @@ export async function createEducationAction(
     console.error("Error creating education:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal menyimpan data pendidikan." },
+      error: { code: "SERVER_ERROR", message: "Failed to save education record." },
     };
   }
 }
@@ -80,7 +80,7 @@ export async function updateEducationAction(
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -90,7 +90,7 @@ export async function updateEducationAction(
       success: false,
       error: {
         code: "VALIDATION_ERROR",
-        message: "Data pembaruan pendidikan tidak valid.",
+        message: "Invalid education update payload.",
         details: parsed.error.issues.map((i) => ({
           field: i.path.join("."),
           message: i.message,
@@ -130,7 +130,7 @@ export async function updateEducationAction(
     console.error("Error updating education:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal memperbarui data pendidikan." },
+      error: { code: "SERVER_ERROR", message: "Failed to update education record." },
     };
   }
 }
@@ -142,7 +142,7 @@ export async function deleteEducationAction(
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -158,7 +158,7 @@ export async function deleteEducationAction(
     console.error("Error deleting education:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal menghapus data pendidikan." },
+      error: { code: "SERVER_ERROR", message: "Failed to delete education record." },
     };
   }
 }

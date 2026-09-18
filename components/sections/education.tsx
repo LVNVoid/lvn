@@ -10,7 +10,7 @@ export function Education({ educations }: EducationProps) {
   if (!educations || educations.length === 0) {
     return (
       <div className="rounded-xl border border-dashed border-border/80 p-8 text-center text-sm text-muted-foreground">
-        Belum ada riwayat pendidikan yang ditambahkan.
+        No education history recorded yet.
       </div>
     );
   }

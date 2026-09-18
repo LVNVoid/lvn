@@ -17,7 +17,7 @@ export async function createSkillAction(
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -27,7 +27,7 @@ export async function createSkillAction(
       success: false,
       error: {
         code: "VALIDATION_ERROR",
-        message: "Data keahlian tidak valid.",
+        message: "Invalid skill payload.",
         details: parsed.error.issues.map((i) => ({
           field: i.path.join("."),
           message: i.message,
@@ -62,7 +62,7 @@ export async function createSkillAction(
     console.error("Error creating skill:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal menyimpan keahlian." },
+      error: { code: "SERVER_ERROR", message: "Failed to save skill." },
     };
   }
 }
@@ -74,7 +74,7 @@ export async function deleteSkillAction(
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -90,7 +90,7 @@ export async function deleteSkillAction(
     console.error("Error deleting skill:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal menghapus keahlian." },
+      error: { code: "SERVER_ERROR", message: "Failed to delete skill." },
     };
   }
 }

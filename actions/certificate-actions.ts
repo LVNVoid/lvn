@@ -19,7 +19,7 @@ export async function createCertificateAction(
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -29,7 +29,7 @@ export async function createCertificateAction(
       success: false,
       error: {
         code: "VALIDATION_ERROR",
-        message: "Data sertifikat tidak valid.",
+        message: "Invalid certificate payload.",
         details: parsed.error.issues.map((i) => ({
           field: i.path.join("."),
           message: i.message,
@@ -73,7 +73,7 @@ export async function createCertificateAction(
     console.error("Error creating certificate:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal menyimpan sertifikat." },
+      error: { code: "SERVER_ERROR", message: "Failed to save certificate." },
     };
   }
 }
@@ -86,7 +86,7 @@ export async function updateCertificateAction(
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -96,7 +96,7 @@ export async function updateCertificateAction(
       success: false,
       error: {
         code: "VALIDATION_ERROR",
-        message: "Data pembaruan sertifikat tidak valid.",
+        message: "Invalid certificate update payload.",
         details: parsed.error.issues.map((i) => ({
           field: i.path.join("."),
           message: i.message,
@@ -140,7 +140,7 @@ export async function updateCertificateAction(
     console.error("Error updating certificate:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal memperbarui sertifikat." },
+      error: { code: "SERVER_ERROR", message: "Failed to update certificate." },
     };
   }
 }
@@ -152,7 +152,7 @@ export async function deleteCertificateAction(
   if (!session) {
     return {
       success: false,
-      error: { code: "UNAUTHORIZED", message: "Sesi tidak valid atau telah berakhir." },
+      error: { code: "UNAUTHORIZED", message: "Session invalid or expired. Please sign in again." },
     };
   }
 
@@ -168,7 +168,7 @@ export async function deleteCertificateAction(
     console.error("Error deleting certificate:", error);
     return {
       success: false,
-      error: { code: "SERVER_ERROR", message: "Gagal menghapus sertifikat." },
+      error: { code: "SERVER_ERROR", message: "Failed to delete certificate." },
     };
   }
 }
