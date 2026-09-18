@@ -104,3 +104,22 @@ export async function getProjectById(id: string): Promise<Project | null> {
     return null;
   }
 }
+
+export async function getAdjacentProjects(currentSlug: string): Promise<{
+  prev: { title: string; slug: string } | null;
+  next: { title: string; slug: string } | null;
+}> {
+  try {
+    const projects = await getProjects();
+    const currentIndex = projects.findIndex((p) => p.slug === currentSlug);
+    if (currentIndex === -1) return { prev: null, next: null };
+
+    const prev = currentIndex > 0 ? { title: projects[currentIndex - 1].title, slug: projects[currentIndex - 1].slug } : null;
+    const next = currentIndex < projects.length - 1 ? { title: projects[currentIndex + 1].title, slug: projects[currentIndex + 1].slug } : null;
+
+    return { prev, next };
+  } catch (error) {
+    console.error("Failed to get adjacent projects:", error);
+    return { prev: null, next: null };
+  }
+}

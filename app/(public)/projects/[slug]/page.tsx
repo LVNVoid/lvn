@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { getProjectBySlug } from "@/services/project-service";
+import { getProjectBySlug, getAdjacentProjects } from "@/services/project-service";
 import ProjectDetailClient from "./client";
 import type { Metadata } from "next";
 
@@ -25,11 +25,14 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 
 export default async function DetailProject(props: PageProps) {
   const { slug } = await props.params;
-  const project = await getProjectBySlug(slug);
+  const [project, adjacent] = await Promise.all([
+    getProjectBySlug(slug),
+    getAdjacentProjects(slug),
+  ]);
 
   if (!project) {
     notFound();
   }
 
-  return <ProjectDetailClient project={project} />;
+  return <ProjectDetailClient project={project} adjacent={adjacent} />;
 }
