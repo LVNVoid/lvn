@@ -1,129 +1,144 @@
-"use client"
+"use client";
 
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent } from "@/components/ui/card"
-import { motion } from "framer-motion"
-import { ArrowLeft, Calendar, ExternalLink, Github, Layers } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
-import type { Project } from "@/schemas/project-schema"
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { motion } from "framer-motion";
+import { ArrowLeft, Calendar, ExternalLink, Github, Layers, Sparkles } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import type { Project } from "@/schemas/project-schema";
 
 export default function ProjectDetailClient({ project }: { project: Project }) {
     return (
         <div className="min-h-screen bg-background text-foreground pb-20">
-            <section className="relative h-[50vh] min-h-[400px] w-full overflow-hidden flex items-end">
+            {/* Hero Header Section */}
+            <section className="relative h-[45vh] min-h-[360px] w-full overflow-hidden flex items-end">
                 <div className="absolute inset-0 z-0">
                     {project.image ? (
                         <Image
                             src={project.image}
                             alt={project.title}
                             fill
-                            className="object-cover opacity-80 dark:opacity-80 blur-sm scale-105"
+                            className="object-cover opacity-60 dark:opacity-40 blur-[2px] scale-105"
                             priority
                         />
                     ) : (
-                        <div className="w-full h-full bg-linear-to-br from-primary/10 to-secondary/10" />
+                        <div className="w-full h-full bg-gradient-to-br from-teal-950/20 via-background to-background" />
                     )}
-                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background via-background/80 to-transparent" />
                 </div>
 
-                <div className="container relative z-10 pb-12">
+                <div className="container relative z-10 pb-10">
                     <motion.div
-                        initial={{ opacity: 0, x: -20 }}
+                        initial={{ opacity: 0, x: -15 }}
                         animate={{ opacity: 1, x: 0 }}
-                        transition={{ duration: 0.5 }}
+                        transition={{ duration: 0.4 }}
                     >
                         <Link href="/projects">
-                            <Button variant="ghost" className="mb-6 hover:bg-background/20 hover:backdrop-blur-md group">
-                                <ArrowLeft className="mr-2 h-4 w-4 transition-transform group-hover:-translate-x-1" />
+                            <Button
+                                variant="ghost"
+                                size="sm"
+                                className="mb-6 gap-2 border border-border/40 bg-background/50 backdrop-blur-md hover:bg-background/80 group"
+                            >
+                                <ArrowLeft className="h-4 w-4 transition-transform group-hover:-translate-x-1" />
                                 Back to Projects
                             </Button>
                         </Link>
                     </motion.div>
 
                     <motion.h1
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.1 }}
-                        className="text-4xl md:text-6xl font-bold tracking-tight mb-4 bg-clip-text text-transparent bg-linear-to-r from-foreground to-foreground/70"
+                        transition={{ duration: 0.5, delay: 0.1 }}
+                        className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold tracking-[-0.035em] text-foreground leading-[1.12] max-w-4xl"
                     >
                         {project.title}
                     </motion.h1>
 
                     <motion.div
-                        initial={{ opacity: 0, y: 20 }}
+                        initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.6, delay: 0.2 }}
-                        className="flex flex-wrap gap-3 items-center text-muted-foreground"
+                        transition={{ duration: 0.5, delay: 0.2 }}
+                        className="flex flex-wrap gap-2.5 items-center mt-4"
                     >
-                        <span className="flex items-center gap-1.5 bg-secondary/50 backdrop-blur-md px-3 py-1 rounded-full text-sm">
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-teal-500/20 bg-teal-500/10 px-3 py-1 text-xs font-mono text-teal-400">
                             <Calendar className="h-3.5 w-3.5" />
                             {project.createdAt
-                              ? new Date(project.createdAt).toLocaleDateString(undefined, {
+                              ? new Date(project.createdAt).toLocaleDateString('en-US', {
                                   year: 'numeric',
-                                  month: 'long',
+                                  month: 'short',
                                 })
-                              : '-'}
+                              : 'Production'}
+                        </span>
+                        <span className="inline-flex items-center gap-1.5 rounded-full border border-border/60 bg-secondary/60 px-3 py-1 text-xs font-mono text-muted-foreground">
+                            <Layers className="h-3.5 w-3.5" />
+                            {project.tech.length} Technologies
                         </span>
                     </motion.div>
                 </div>
             </section>
 
-            <div className="container mt-12 grid grid-cols-1 lg:grid-cols-3 gap-10">
+            {/* Main Content Layout */}
+            <div className="container mt-10 grid grid-cols-1 lg:grid-cols-3 gap-10">
+                {/* Left Column: Architectural Overview & Showcase */}
                 <motion.div
                     className="lg:col-span-2 space-y-10"
-                    initial={{ opacity: 0, y: 20 }}
+                    initial={{ opacity: 0, y: 15 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.6, delay: 0.3 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                    <div className="prose dark:prose-invert max-w-none">
-                        <h2 className="text-2xl font-semibold mb-4 flex items-center gap-2">
-                            About Project
-                        </h2>
-                        <p className="text-lg leading-relaxed text-muted-foreground whitespace-pre-wrap">
+                    <div className="space-y-4">
+                        <div className="flex items-center gap-2">
+                            <span className="h-4 w-1 rounded-full bg-teal-500" />
+                            <h2 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground">
+                                System Overview &amp; Architecture
+                            </h2>
+                        </div>
+                        <p className="text-base sm:text-lg leading-[1.75] text-muted-foreground whitespace-pre-wrap font-normal">
                             {project.description}
                         </p>
                     </div>
 
                     {project.image && (
                         <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
+                            initial={{ opacity: 0, scale: 0.98 }}
                             whileInView={{ opacity: 1, scale: 1 }}
                             viewport={{ once: true }}
-                            transition={{ duration: 0.5 }}
-                            className="rounded-2xl overflow-hidden shadow-2xl border border-border/50"
+                            transition={{ duration: 0.4 }}
+                            className="rounded-xl overflow-hidden border border-border/80 bg-card/60 shadow-sm"
                         >
                             <Image
                                 src={project.image}
                                 alt={project.title}
                                 width={1200}
                                 height={675}
-                                className="w-full h-auto"
+                                className="w-full h-auto object-cover"
                             />
                         </motion.div>
                     )}
                 </motion.div>
 
+                {/* Right Column: Sticky Metadata & Action Card */}
                 <motion.div
                     className="space-y-6"
-                    initial={{ opacity: 0, x: 20 }}
+                    initial={{ opacity: 0, x: 15 }}
                     animate={{ opacity: 1, x: 0 }}
-                    transition={{ duration: 0.6, delay: 0.4 }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                    <Card className="border-border/50 shadow-sm bg-card/50 backdrop-blur-xs sticky top-24">
+                    <Card className="border border-border/80 bg-card/60 shadow-sm sticky top-24">
                         <CardContent className="p-6 space-y-6">
                             <div>
-                                <h3 className="text-sm font-medium text-muted-foreground mb-3 uppercase tracking-wider flex items-center gap-2">
-                                    <Layers className="h-4 w-4" />
-                                    Tech Stack
+                                <h3 className="text-xs font-mono font-semibold uppercase tracking-widest text-muted-foreground mb-3 flex items-center gap-2">
+                                    <Sparkles className="h-3.5 w-3.5 text-teal-400" />
+                                    Technology Stack
                                 </h3>
-                                <div className="flex flex-wrap gap-2">
+                                <div className="flex flex-wrap gap-1.5">
                                     {project.tech.map((tech) => (
                                         <Badge
                                             key={tech}
                                             variant="secondary"
-                                            className="px-3 py-1 text-sm font-normal bg-secondary/50 hover:bg-secondary/80 transition-colors"
+                                            className="border border-border/60 bg-secondary/80 px-2.5 py-0.5 text-xs font-mono text-foreground/90"
                                         >
                                             {tech}
                                         </Badge>
@@ -132,22 +147,35 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
                             </div>
 
                             {(project.link || project.github) && (
-                                <div className="pt-6 border-t border-border/50 grid grid-cols-1 gap-3">
+                                <div className="pt-6 border-t border-border/60 space-y-3">
+                                    <h3 className="text-xs font-mono font-semibold uppercase tracking-widest text-muted-foreground">
+                                        Project Artifacts
+                                    </h3>
                                     {project.link && (
-                                        <Link href={project.link} target="_blank" rel="noopener noreferrer" className="w-full">
-                                            <Button className="w-full font-semibold shadow-lg shadow-primary/20" size="lg">
+                                        <a
+                                            href={project.link}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block w-full"
+                                        >
+                                            <Button className="w-full font-medium" size="default">
                                                 <ExternalLink className="mr-2 h-4 w-4" />
-                                                Live Demo
+                                                Live Deployment
                                             </Button>
-                                        </Link>
+                                        </a>
                                     )}
                                     {project.github && (
-                                        <Link href={project.github} target="_blank" rel="noopener noreferrer" className="w-full">
-                                            <Button variant="outline" className="w-full" size="lg">
+                                        <a
+                                            href={project.github}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className="block w-full"
+                                        >
+                                            <Button variant="outline" className="w-full font-medium" size="default">
                                                 <Github className="mr-2 h-4 w-4" />
-                                                View Source
+                                                Source Repository
                                             </Button>
-                                        </Link>
+                                        </a>
                                     )}
                                 </div>
                             )}
@@ -156,5 +184,5 @@ export default function ProjectDetailClient({ project }: { project: Project }) {
                 </motion.div>
             </div>
         </div>
-    )
+    );
 }

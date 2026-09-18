@@ -66,21 +66,23 @@ export default async function CertificateDetailPage({ params }: PageProps) {
 
         <div className="space-y-6">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight mb-2">{certificate.name}</h1>
-            <p className="text-xl text-muted-foreground">{certificate.issuer}</p>
+            <h1 className="text-2xl sm:text-3xl font-bold tracking-[-0.03em] text-foreground mb-2">{certificate.name}</h1>
+            <p className="text-base sm:text-lg font-medium text-teal-500/90">{certificate.issuer}</p>
           </div>
 
-          <div className="flex items-center gap-2 text-muted-foreground">
-            <Calendar className="h-4 w-4" />
+          <div className="inline-flex items-center gap-2 rounded-full border border-border/60 bg-secondary/50 px-3 py-1 text-xs font-mono text-muted-foreground">
+            <Calendar className="h-3.5 w-3.5" />
             <span>Issued: {certificate.date}</span>
           </div>
 
           {certificate.url && (
-            <Button asChild size="lg" className="w-full md:w-auto">
-              <a href={certificate.url} target="_blank" rel="noreferrer">
-                View Credential <ExternalLink className="ml-2 h-4 w-4" />
-              </a>
-            </Button>
+            <div>
+              <Button asChild size="default" className="w-full sm:w-auto font-medium">
+                <a href={certificate.url} target="_blank" rel="noreferrer">
+                  View Credential <ExternalLink className="ml-2 h-4 w-4" />
+                </a>
+              </Button>
+            </div>
           )}
         </div>
       </div>
