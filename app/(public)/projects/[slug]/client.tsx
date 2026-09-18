@@ -307,34 +307,36 @@ export default function ProjectDetailClient({
       {/* Bottom Pagination: Adjacent Projects */}
       {adjacent && (adjacent.prev || adjacent.next) && (
         <div className="mt-16 pt-8 border-t border-border/60">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {adjacent.prev ? (
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
+            {adjacent.prev && (
               <Link
                 href={`/projects/${adjacent.prev.slug}`}
-                className="group flex flex-col justify-between rounded-lg border border-border/80 bg-card/40 p-4 transition-colors hover:border-teal-500/40"
+                className={`group flex flex-col justify-between rounded-lg border border-border/80 bg-card/40 p-3 sm:p-4 transition-colors hover:border-teal-500/40 ${
+                  !adjacent.next ? "col-span-2 sm:col-span-1" : ""
+                }`}
               >
-                <span className="text-[11px] font-mono text-muted-foreground flex items-center gap-1">
-                  <ArrowLeft className="h-3 w-3 transition-transform group-hover:-translate-x-1" />
-                  Previous Project
+                <span className="text-[10px] sm:text-[11px] font-mono text-muted-foreground flex items-center gap-1">
+                  <ArrowLeft className="h-3 w-3 shrink-0 transition-transform group-hover:-translate-x-1" />
+                  Previous
                 </span>
-                <span className="text-sm font-semibold text-foreground group-hover:text-teal-400 transition-colors mt-1 line-clamp-1">
+                <span className="text-xs sm:text-sm font-semibold text-foreground group-hover:text-teal-400 transition-colors mt-1 line-clamp-1">
                   {adjacent.prev.title}
                 </span>
               </Link>
-            ) : (
-              <div />
             )}
 
             {adjacent.next && (
               <Link
                 href={`/projects/${adjacent.next.slug}`}
-                className="group flex flex-col justify-between items-end rounded-lg border border-border/80 bg-card/40 p-4 transition-colors hover:border-teal-500/40 text-right"
+                className={`group flex flex-col justify-between items-end rounded-lg border border-border/80 bg-card/40 p-3 sm:p-4 transition-colors hover:border-teal-500/40 text-right ${
+                  !adjacent.prev ? "col-span-2 sm:col-span-1 sm:col-start-2" : ""
+                }`}
               >
-                <span className="text-[11px] font-mono text-muted-foreground flex items-center gap-1">
-                  Next Project
-                  <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1" />
+                <span className="text-[10px] sm:text-[11px] font-mono text-muted-foreground flex items-center gap-1">
+                  Next
+                  <ArrowRight className="h-3 w-3 shrink-0 transition-transform group-hover:translate-x-1" />
                 </span>
-                <span className="text-sm font-semibold text-foreground group-hover:text-teal-400 transition-colors mt-1 line-clamp-1">
+                <span className="text-xs sm:text-sm font-semibold text-foreground group-hover:text-teal-400 transition-colors mt-1 line-clamp-1">
                   {adjacent.next.title}
                 </span>
               </Link>
