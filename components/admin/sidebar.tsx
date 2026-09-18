@@ -11,6 +11,7 @@ import {
   Code2,
   GraduationCap,
   Award,
+  ShieldCheck,
   LogOut,
   Globe,
   ArrowUpRight,
@@ -47,6 +48,11 @@ const routes = [
     label: 'Certificates',
     icon: Award,
     href: '/admin/certificates',
+  },
+  {
+    label: 'Security',
+    icon: ShieldCheck,
+    href: '/admin/security',
   },
 ];
 
