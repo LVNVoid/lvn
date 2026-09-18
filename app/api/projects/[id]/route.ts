@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { revalidatePath, revalidateTag } from 'next/cache'
 import prisma from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '@/lib/auth'
@@ -24,6 +25,13 @@ export async function PUT(req: Request, props: { params: Promise<{ id: string }>
         image: data.image,
       },
     })
+    
+    revalidateTag("projects", "max");
+    revalidatePath("/projects");
+    revalidatePath(`/projects/${project.slug}`);
+    revalidatePath("/admin/projects");
+    revalidatePath("/");
+
     return NextResponse.json(project)
   } catch (error) {
     return NextResponse.json({ error: 'Failed to update project' }, { status: 500 })

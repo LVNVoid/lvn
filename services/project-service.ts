@@ -25,20 +25,17 @@ export const getProjects = unstable_cache(
   async (): Promise<Project[]> => {
     try {
       try {
-        await db.project.upsert({
+        const existing = await db.project.findUnique({
           where: { slug: KOPI_SANGKARA_PROJECT.slug },
-          update: {
-            title: KOPI_SANGKARA_PROJECT.title,
-            description: KOPI_SANGKARA_PROJECT.description,
-            image: KOPI_SANGKARA_PROJECT.image,
-            link: KOPI_SANGKARA_PROJECT.link,
-            github: KOPI_SANGKARA_PROJECT.github,
-            tech: KOPI_SANGKARA_PROJECT.tech,
-          },
-          create: KOPI_SANGKARA_PROJECT,
+          select: { id: true },
         });
-      } catch (upsertErr) {
-        console.warn("Could not auto-upsert Kopi Sangkara POS:", upsertErr);
+        if (!existing) {
+          await db.project.create({
+            data: KOPI_SANGKARA_PROJECT,
+          });
+        }
+      } catch (seedErr) {
+        console.warn("Could not ensure Kopi Sangkara POS record:", seedErr);
       }
 
       const projects = await db.project.findMany({
