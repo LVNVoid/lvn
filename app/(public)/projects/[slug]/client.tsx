@@ -15,10 +15,38 @@ import {
   ShieldCheck,
   Zap,
   Globe,
+  Database,
+  Server,
+  Cpu,
+  Layout,
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Project } from "@/schemas/project-schema";
+import {
+  getProjectHighlights,
+  type HighlightIconType,
+} from "@/utils/project-highlights";
+
+function HighlightIcon({ type }: { type: HighlightIconType }) {
+  switch (type) {
+    case "database":
+      return <Database className="h-4 w-4" />;
+    case "server":
+      return <Server className="h-4 w-4" />;
+    case "cpu":
+      return <Cpu className="h-4 w-4" />;
+    case "shield":
+      return <ShieldCheck className="h-4 w-4" />;
+    case "layout":
+      return <Layout className="h-4 w-4" />;
+    case "layers":
+      return <Layers className="h-4 w-4" />;
+    case "zap":
+    default:
+      return <Zap className="h-4 w-4" />;
+  }
+}
 
 interface ProjectDetailClientProps {
   project: Project;
@@ -39,6 +67,8 @@ export default function ProjectDetailClient({
         day: "numeric",
       })
     : "Production";
+
+  const highlights = getProjectHighlights(project);
 
   return (
     <div className="min-h-screen bg-background text-foreground pb-24">
@@ -189,25 +219,22 @@ export default function ProjectDetailClient({
             </div>
 
             <div className="grid gap-4 sm:grid-cols-2">
-              <div className="rounded-lg border border-border/80 bg-card/40 p-4 space-y-2">
-                <div className="flex items-center gap-2 text-teal-400">
-                  <Zap className="h-4 w-4" />
-                  <h4 className="text-sm font-semibold text-foreground">Performance &amp; Caching</h4>
+              {highlights.map((item, idx) => (
+                <div
+                  key={idx}
+                  className="rounded-lg border border-border/80 bg-card/40 p-4 space-y-2"
+                >
+                  <div className="flex items-center gap-2 text-teal-400">
+                    <HighlightIcon type={item.icon} />
+                    <h4 className="text-sm font-semibold text-foreground">
+                      {item.title}
+                    </h4>
+                  </div>
+                  <p className="text-xs leading-relaxed text-muted-foreground">
+                    {item.description}
+                  </p>
                 </div>
-                <p className="text-xs leading-relaxed text-muted-foreground">
-                  Structured data access, zero-flicker revalidation, and minimal runtime JS footprint.
-                </p>
-              </div>
-
-              <div className="rounded-lg border border-border/80 bg-card/40 p-4 space-y-2">
-                <div className="flex items-center gap-2 text-teal-400">
-                  <ShieldCheck className="h-4 w-4" />
-                  <h4 className="text-sm font-semibold text-foreground">Security &amp; Strict Types</h4>
-                </div>
-                <p className="text-xs leading-relaxed text-muted-foreground">
-                  Zod contract validation, protected server endpoints, and zero unhandled type assertions.
-                </p>
-              </div>
+              ))}
             </div>
           </div>
         </motion.div>
