@@ -50,3 +50,22 @@ export async function getCertificateBySlug(slug: string): Promise<Certificate | 
     return null;
   }
 }
+
+export async function getAdjacentCertificates(currentSlug: string): Promise<{
+  prev: { name: string; slug: string } | null;
+  next: { name: string; slug: string } | null;
+}> {
+  try {
+    const certificates = await getCertificates();
+    const currentIndex = certificates.findIndex((c) => c.slug === currentSlug);
+    if (currentIndex === -1) return { prev: null, next: null };
+
+    const prev = currentIndex > 0 ? { name: certificates[currentIndex - 1].name, slug: certificates[currentIndex - 1].slug } : null;
+    const next = currentIndex < certificates.length - 1 ? { name: certificates[currentIndex + 1].name, slug: certificates[currentIndex + 1].slug } : null;
+
+    return { prev, next };
+  } catch (error) {
+    console.error("Failed to get adjacent certificates:", error);
+    return { prev: null, next: null };
+  }
+}
