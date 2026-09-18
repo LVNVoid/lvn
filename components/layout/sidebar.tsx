@@ -39,7 +39,8 @@ export function Sidebar({ className, onNavigate, profile }: SidebarProps) {
     if (onNavigate) onNavigate();
   };
 
-  if (!profile) return null;
+  const name = profile?.name || 'Elvien';
+  const avatar = profile?.avatar || '/placeholder.png';
 
   return (
     <aside
@@ -49,10 +50,10 @@ export function Sidebar({ className, onNavigate, profile }: SidebarProps) {
       )}
     >
       <div className="flex flex-col items-center pt-6 gap-3 text-center">
-        <div className="h-24 w-24 rounded-full bg-muted overflow-hidden border-1 border-primary/20 relative">
+        <div className="h-24 w-24 rounded-full bg-muted overflow-hidden border border-border/80 relative">
           <Image
-            src={profile.avatar || '/placeholder.png'}
-            alt={profile.name}
+            src={avatar}
+            alt={name}
             fill
             sizes="100px"
             className="object-cover"
@@ -61,7 +62,7 @@ export function Sidebar({ className, onNavigate, profile }: SidebarProps) {
         </div>
         <div>
           <h2 className="text-xl font-bold flex items-center justify-center gap-1">
-            {profile.name}{' '}
+            {name}{' '}
             <Image
               src="/icons/verified-logo.svg"
               alt="Verified"
@@ -70,7 +71,7 @@ export function Sidebar({ className, onNavigate, profile }: SidebarProps) {
             />
           </h2>
           <p className="text-xs text-muted-foreground">
-            @{profile.name.toLowerCase().replace(/\s/g, '')}
+            @{name.toLowerCase().replace(/\s/g, '')}
           </p>
         </div>
 
@@ -125,7 +126,7 @@ export function Sidebar({ className, onNavigate, profile }: SidebarProps) {
             Copyright <Copyright className="h-2 w-2" /> 2026
           </p>
           <p className="text-[10px] text-muted-foreground">
-            {profile.name}. All rights reserved.
+            {name}. All rights reserved.
           </p>
         </div>
       </div>

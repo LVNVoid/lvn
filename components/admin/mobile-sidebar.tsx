@@ -20,7 +20,7 @@ export const MobileSidebar = () => {
                     <Menu />
                 </Button>
             </SheetTrigger>
-            <SheetContent side="left" className="p-0 bg-[#111827]">
+            <SheetContent side="left" className="p-0 bg-card border-r border-border/80">
                 <AdminSidebar />
             </SheetContent>
         </Sheet>

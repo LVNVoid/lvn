@@ -3,6 +3,7 @@
 import { Sidebar, navItems } from '@/components/layout/sidebar';
 import { MessageCircle, Copyright } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { Navbar } from '@/components/layout/navbar';
@@ -96,7 +97,17 @@ export function LayoutWrapper({
               })}
             </nav>
 
-            <div className="mt-auto pt-8 space-y-6">
+            <div className="mt-auto pt-8 space-y-4">
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="flex items-center justify-between rounded-xl border border-border/80 bg-card/60 px-4 py-3"
+              >
+                <span className="text-xs font-mono text-muted-foreground">Appearance Theme</span>
+                <ThemeToggle />
+              </motion.div>
+
               <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -114,7 +125,7 @@ export function LayoutWrapper({
                 transition={{ delay: 0.6 }}
                 className="text-center text-xs text-muted-foreground flex items-center justify-center gap-1"
               >
-                Copyright <Copyright className="h-3 w-3" /> 2026 Elvien
+                Copyright <Copyright className="h-3 w-3" /> 2026 {profile?.name || 'Elvien'}
               </motion.p>
             </div>
           </motion.div>

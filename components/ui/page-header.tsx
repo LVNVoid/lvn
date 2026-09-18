@@ -1,6 +1,6 @@
-import { SlideUp } from '@/components/ui/animated';
-import { LucideIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
+import { SlideUp } from "@/components/ui/animated";
+import { LucideIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface PageHeaderProps {
   title: string;
@@ -18,22 +18,20 @@ export function PageHeader({
   iconClassName,
 }: PageHeaderProps) {
   return (
-    <>
-      <SlideUp className={cn('space-y-4', className)}>
-        <h1 className="text-xl lg:text-3xl font-bold tracking-tight flex items-center gap-3">
-          {Icon && (
-            <Icon
-              className={cn('h-6 w-6 text-primary shrink-0', iconClassName)}
-            />
-          )}
-          {title}
-        </h1>
-        {description && (
-          <p className="text-muted-foreground text-base lg:text-base max-w-2xl">
-            {description}
-          </p>
+    <SlideUp className={cn("space-y-2.5", className)}>
+      <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold tracking-[-0.035em] text-foreground flex items-center gap-3">
+        {Icon && (
+          <Icon
+            className={cn("h-6 w-6 sm:h-7 sm:w-7 text-primary shrink-0", iconClassName)}
+          />
         )}
-      </SlideUp>
-    </>
+        <span>{title}</span>
+      </h1>
+      {description && (
+        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-2xl">
+          {description}
+        </p>
+      )}
+    </SlideUp>
   );
 }

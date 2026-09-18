@@ -15,7 +15,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Loader2, Lock } from 'lucide-react';
+import { Loader2, Lock, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function LoginPage() {
@@ -52,70 +52,75 @@ export default function LoginPage() {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden p-4">
       <motion.div
-        initial={{ opacity: 0, y: 20 }}
+        initial={{ opacity: 0, y: 16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
+        transition={{ duration: 0.4 }}
         className="relative z-10 w-full max-w-sm"
       >
-        <Card className="border-muted/40 shadow-xl backdrop-blur-sm bg-background/80">
-          <CardHeader className="space-y-1 text-center">
-            <div className="flex justify-center mb-4">
-              <div className="p-3 rounded-full bg-primary/10 text-primary">
-                <Lock className="w-6 h-6" />
+        <Card className="border border-border/80 shadow-2xl backdrop-blur-md bg-card/80 rounded-2xl">
+          <CardHeader className="space-y-2 text-center pb-4">
+            <div className="flex justify-center mb-2">
+              <div className="p-3 rounded-2xl border border-teal-500/30 bg-teal-500/10 text-teal-400">
+                <Lock className="w-5 h-5" />
               </div>
             </div>
-            <CardTitle className="text-2xl font-bold tracking-tight">
-              Admin Access
+            <CardTitle className="text-2xl font-bold tracking-[-0.035em] text-foreground">
+              Admin Gateway
             </CardTitle>
-            <CardDescription>
-              Enter your credentials to access the dashboard
+            <CardDescription className="text-xs text-muted-foreground">
+              Authenticated administration environment
             </CardDescription>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
               {error && (
-                <Alert variant="destructive" className="py-2 text-sm">
+                <Alert variant="destructive" className="py-2 text-xs">
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="email" className="text-xs font-mono text-muted-foreground">
+                  Email
+                </Label>
                 <Input
                   id="email"
                   type="email"
-                  placeholder="admin@example.com"
+                  placeholder="admin@elvien.net"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="bg-transparent"
+                  className="bg-secondary/30 border-border/60 focus-visible:ring-teal-500/30 text-sm"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+              <div className="space-y-1.5">
+                <Label htmlFor="password" className="text-xs font-mono text-muted-foreground">
+                  Password
+                </Label>
                 <Input
                   id="password"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="bg-transparent"
+                  className="bg-secondary/30 border-border/60 focus-visible:ring-teal-500/30 text-sm"
                 />
               </div>
-              <Button className="w-full" type="submit" disabled={loading}>
+              <Button className="w-full gap-2 font-medium" type="submit" disabled={loading}>
                 {loading ? (
                   <>
-                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                    Signing in...
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                    Authenticating...
                   </>
                 ) : (
-                  'Sign In'
+                  'Authorize Session'
                 )}
               </Button>
             </form>
           </CardContent>
-          <CardFooter className="flex justify-center">
-            <p className="text-xs text-muted-foreground text-center">
-              Protected by secure authentication system
+          <CardFooter className="flex justify-center pt-2">
+            <p className="text-[11px] font-mono text-muted-foreground text-center flex items-center gap-1.5">
+              <ShieldCheck className="h-3.5 w-3.5 text-teal-400" />
+              Protected by NextAuth Edge Guard
             </p>
           </CardFooter>
         </Card>
