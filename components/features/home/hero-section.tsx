@@ -1,10 +1,9 @@
 'use client';
 
 import { SlideUp } from '@/components/ui/animated';
-import TextType from '@/components/ui/text-type';
 import { buttonVariants } from '@/components/ui/button';
-import { Download } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { Download, ArrowUpRight, MapPin } from 'lucide-react';
+import Link from 'next/link';
 import type { Profile } from '@/schemas/profile-schema';
 
 interface HeroSectionProps {
@@ -13,53 +12,73 @@ interface HeroSectionProps {
 
 export function HeroSection({ profile }: HeroSectionProps) {
   return (
-    <section className="space-y-6">
+    <section className="space-y-8 py-2">
       <SlideUp>
-        <div className="flex flex-col gap-4 lg:flex-row lg:justify-between lg:items-start">
-          <div className="flex-1 min-w-0">
-            <h2 className="text-2xl font-bold tracking-tight lg:text-4xl flex flex-wrap gap-2 items-center">
-              <span>Hi, I&apos;m</span>
-              <TextType
-                text={[profile.name, 'Software Engineer']}
-                typingSpeed={75}
-                pauseDuration={1500}
-                showCursor={true}
-                cursorCharacter="|"
-              />
-            </h2>
-
-            <div className="flex flex-wrap items-center gap-2 text-sm text-muted-foreground mt-3">
-              <span className="flex items-center gap-1">
-                • Based in {profile.location}{' '}
-                <span className="text-xs border px-1 rounded">ID</span>
-              </span>
-              <span className="flex items-center gap-1">
-                •{' '}
-                <span className="h-2 w-2 rounded-full bg-green-500 animate-pulse" />{' '}
-                Hire me
-              </span>
-            </div>
+        <div className="space-y-4">
+          {/* Status Indicator Badge */}
+          <div className="inline-flex items-center gap-2.5 rounded-full border border-teal-500/20 bg-teal-500/5 px-3 py-1 text-xs font-mono text-teal-400">
+            <span className="relative flex h-2 w-2">
+              <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-teal-400 opacity-75" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-teal-500" />
+            </span>
+            Available for new opportunities
           </div>
 
-          <motion.a
-            href="/cv.pdf"
-            download="CV_Elvien.pdf"
-            className={buttonVariants({
-              className: 'gap-2 select-none shrink-0 self-start lg:self-auto',
-            })}
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Download className="h-4 w-4" /> Download CV
-          </motion.a>
+          {/* Editorial Display Typography */}
+          <div className="space-y-2">
+            <h1 className="text-3xl font-bold tracking-[-0.035em] text-foreground sm:text-4xl lg:text-5xl">
+              {profile.name}
+            </h1>
+            <p className="text-lg font-medium tracking-tight text-teal-500/90 sm:text-xl">
+              Software Engineer &amp; System Builder
+            </p>
+          </div>
+
+          {/* Metadata Row */}
+          <div className="flex flex-wrap items-center gap-3 text-xs text-muted-foreground">
+            <span className="inline-flex items-center gap-1 font-mono">
+              <MapPin className="h-3.5 w-3.5 text-muted-foreground/70" />
+              {profile.location || 'Indonesia'}
+            </span>
+            <span className="text-border">•</span>
+            <span className="font-mono">Full-Stack &amp; Systems</span>
+          </div>
         </div>
       </SlideUp>
 
+      {/* Bio Narrative */}
       <SlideUp delay={0.1}>
-        <p className="text-muted-foreground leading-relaxed max-w-3xl text-base">
+        <p className="max-w-2xl text-base leading-relaxed text-muted-foreground">
           {profile.bio ||
-            "I'm a passionate and detail-oriented Software Engineer."}
+            'Specializing in architecting robust web applications, reliable APIs, and polished developer tooling.'}
         </p>
+      </SlideUp>
+
+      {/* Action Buttons */}
+      <SlideUp delay={0.2}>
+        <div className="flex flex-wrap items-center gap-3 pt-1">
+          <Link
+            href="/projects"
+            className={buttonVariants({
+              className: 'gap-2 px-5 py-2.5 font-medium shadow-sm transition-transform active:scale-[0.98]',
+            })}
+          >
+            View Projects
+            <ArrowUpRight className="h-4 w-4" />
+          </Link>
+
+          <a
+            href="/cv.pdf"
+            download="CV_Elvien.pdf"
+            className={buttonVariants({
+              variant: 'outline',
+              className: 'gap-2 px-4 py-2.5 font-medium text-foreground transition-transform active:scale-[0.98]',
+            })}
+          >
+            <Download className="h-4 w-4 text-muted-foreground" />
+            Resume
+          </a>
+        </div>
       </SlideUp>
     </section>
   );

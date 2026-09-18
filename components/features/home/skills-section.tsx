@@ -48,7 +48,6 @@ export function SkillsSection() {
             hoverSpeed={0}
             scaleOnHover
             fadeOut
-            fadeOutColor="bg-primary"
             ariaLabel="Tech Stack"
           />
           <LogoLoop
@@ -60,7 +59,6 @@ export function SkillsSection() {
             hoverSpeed={0}
             scaleOnHover
             fadeOut
-            fadeOutColor="bg-primary"
             ariaLabel="Tech Stack"
           />
         </div>

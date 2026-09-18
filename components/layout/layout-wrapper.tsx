@@ -114,7 +114,7 @@ export function LayoutWrapper({
                 transition={{ delay: 0.6 }}
                 className="text-center text-xs text-muted-foreground flex items-center justify-center gap-1"
               >
-                Copyright <Copyright className="h-3 w-3" /> 2025 Elvien
+                Copyright <Copyright className="h-3 w-3" /> 2026 Elvien
               </motion.p>
             </div>
           </motion.div>

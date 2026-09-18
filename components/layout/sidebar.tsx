@@ -122,7 +122,7 @@ export function Sidebar({ className, onNavigate, profile }: SidebarProps) {
 
         <div className="text-center">
           <p className="text-[10px] text-muted-foreground flex items-center justify-center gap-1">
-            Copyright <Copyright className="h-2 w-2" /> 2025
+            Copyright <Copyright className="h-2 w-2" /> 2026
           </p>
           <p className="text-[10px] text-muted-foreground">
             {profile.name}. All rights reserved.

@@ -1,29 +1,11 @@
-"use client";
-
-import Squares from "./squares";
-import { useTheme } from "next-themes";
-import { useMounted } from "@/hooks/use-mounted";
-
 export function AnimatedBackground() {
-    const { resolvedTheme } = useTheme();
-    const mounted = useMounted();
-
-    if (!mounted) return <div className="fixed inset-0 -z-10 h-full w-full bg-background" />;
-
-    const isDark = resolvedTheme === "dark";
-
     return (
-        <div className="fixed inset-0 -z-10 h-full w-full overflow-hidden bg-background">
-            <div style={{ width: '100%', height: '100%', position: 'relative' }}>
-                <Squares
-                    speed={0.2}
-                    squareSize={50}
-                    direction='diagonal'
-                    borderColor={isDark ? '#0a8a9bff' : '#0a8a9b40'}
-                    hoverFillColor={isDark ? '#222' : '#f0f0f0'}
-                    maskColor={isDark ? '#060010' : '#ffffff'}
-                />
-            </div>
+        <div
+            aria-hidden="true"
+            className="pointer-events-none fixed inset-0 -z-10 h-full w-full overflow-hidden bg-background"
+        >
+            <div className="absolute -top-[30%] left-1/2 -z-10 h-[650px] w-[850px] -translate-x-1/2 rounded-full bg-gradient-to-b from-teal-500/10 via-teal-900/5 to-transparent blur-3xl" />
+            <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(15,118,110,0.08),rgba(255,255,255,0))]" />
         </div>
     );
 }

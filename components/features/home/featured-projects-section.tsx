@@ -29,7 +29,7 @@ export function FeaturedProjectsSection({ projects }: FeaturedProjectsSectionPro
                 </SlideUp>
             </div>
             <SlideUp delay={0.5}>
-                <Projects projects={projects} limit={3} />
+                <Projects projects={projects} limit={3} variant="featured" />
             </SlideUp>
         </section>
     );
