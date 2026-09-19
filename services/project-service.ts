@@ -2,6 +2,25 @@ import { unstable_cache } from "next/cache";
 import { db } from "@/services/db";
 import type { Project } from "@/schemas/project-schema";
 
+export const GOOGLE_REVIEW_CARD_PROJECT = {
+  title: "Google Review Card Generator",
+  slug: "google-review-card-generator",
+  description: `Google Review Card Generator & Physical QR Platform is an end-to-end web engineering solution and print-ready card design system built to bridge offline customer foot traffic with Google Maps business profiles. Engineered for both on-demand custom card generation and mass retail pre-printing, the platform produces millimeter-precise, 300+ DPI physical cards (PVC CR80 cards, A6/A7 acrylic table standees, and cashier counter stickers) with high-fidelity vector PDF and PNG export.
+
+Architectural Overview
+Developed with Next.js 15 App Router and TypeScript, the system adopts Vercel Geist design principles paired with official Google visual identity tokens. The dynamic QR lifecycle is powered by Prisma ORM and serverless PostgreSQL (Neon), executing sub-50ms HTTP 307 proxy redirects (/r/[id]), self-activation onboarding flows, salted SHA-256 PIN verification via native Node.js crypto, and asynchronous scan telemetry logging.
+
+Key Capabilities & Features
+• Millimeter-Accurate WYSIWYG Print Engine: Client-side vector rendering via jsPDF and html-to-image featuring dynamic ResizeObserver auto-scaling, bleed marks, and strict quiet zones for zero-distortion physical printing.
+• Dual Production Workflows: Seamlessly toggles between direct branded cards and universal unbranded stock cards ready for retail pre-printing and distribution.
+• Dynamic Proxy & Self-Activation Portal: Unactivated cards guide merchants through a mobile-first onboarding flow (/r/[id]/activate) with Google Maps link resolution and PIN-protected destination URL updates.
+• Official Typography & Identity Harmony: Authentic Google Sans and Google Sans Text font stack, NFC wave indicators, and verified gold star rating assets.`,
+  tech: ["Next.js", "TypeScript", "Tailwind CSS", "Prisma", "PostgreSQL", "Neon", "Playwright", "jsPDF", "html-to-image"],
+  link: "https://review-card-generator.vercel.app",
+  github: "https://github.com/LVNVoid/review-card-generator",
+  image: "/projects/google-review-card-generator.png",
+};
+
 export const KOPI_SANGKARA_PROJECT = {
   title: "Kopi Sangkara POS",
   slug: "kopi-sangkara-pos",
@@ -21,26 +40,54 @@ Key Capabilities & Features
   image: "/projects/kopi-sangkara-pos.png",
 };
 
+const STATIC_PROJECTS: Project[] = [
+  {
+    id: "google-review-card-generator-id",
+    ...GOOGLE_REVIEW_CARD_PROJECT,
+    createdAt: new Date("2026-09-19T00:00:00.000Z"),
+    updatedAt: new Date("2026-09-19T00:00:00.000Z"),
+  },
+  {
+    id: "kopi-sangkara-pos-id",
+    ...KOPI_SANGKARA_PROJECT,
+    createdAt: new Date("2026-09-08T00:00:00.000Z"),
+    updatedAt: new Date("2026-09-17T00:00:00.000Z"),
+  },
+];
+
 export const getProjects = unstable_cache(
   async (): Promise<Project[]> => {
+    if (!process.env.DATABASE_URL) {
+      return STATIC_PROJECTS;
+    }
+
     try {
-      try {
-        const existing = await db.project.findUnique({
-          where: { slug: KOPI_SANGKARA_PROJECT.slug },
-          select: { id: true },
-        });
-        if (!existing) {
-          await db.project.create({
-            data: KOPI_SANGKARA_PROJECT,
+      // Ensure seed records exist
+      const defaultProjects = [GOOGLE_REVIEW_CARD_PROJECT, KOPI_SANGKARA_PROJECT];
+      for (const p of defaultProjects) {
+        try {
+          const existing = await db.project.findUnique({
+            where: { slug: p.slug },
+            select: { id: true },
           });
+          if (!existing) {
+            await db.project.create({
+              data: p,
+            });
+          }
+        } catch (seedErr) {
+          console.warn(`Could not ensure ${p.title} record:`, seedErr);
         }
-      } catch (seedErr) {
-        console.warn("Could not ensure Kopi Sangkara POS record:", seedErr);
       }
 
       const projects = await db.project.findMany({
         orderBy: { createdAt: "desc" },
       });
+
+      if (!projects || projects.length === 0) {
+        return STATIC_PROJECTS;
+      }
+
       return projects.map((p) => ({
         id: p.id,
         title: p.title,
@@ -55,7 +102,7 @@ export const getProjects = unstable_cache(
       }));
     } catch (error) {
       console.error("Failed to get projects from DB:", error);
-      return [];
+      return STATIC_PROJECTS;
     }
   },
   ["projects-cache"],
@@ -69,7 +116,7 @@ export const getFeaturedProjects = unstable_cache(
       return projects.slice(0, limit);
     } catch (error) {
       console.error("Failed to get featured projects from DB:", error);
-      return [];
+      return STATIC_PROJECTS.slice(0, limit);
     }
   },
   ["featured-projects-cache"],
@@ -77,20 +124,18 @@ export const getFeaturedProjects = unstable_cache(
 );
 
 export async function getProjectBySlug(slug: string): Promise<Project | null> {
+  if (!process.env.DATABASE_URL) {
+    return STATIC_PROJECTS.find((p) => p.slug === slug) || null;
+  }
+
   try {
     const project = await db.project.findUnique({
       where: { slug },
     });
 
     if (!project) {
-      if (slug === KOPI_SANGKARA_PROJECT.slug) {
-        return {
-          id: "kopi-sangkara-pos-id",
-          ...KOPI_SANGKARA_PROJECT,
-          createdAt: new Date("2026-09-08T00:00:00.000Z"),
-          updatedAt: new Date("2026-09-17T00:00:00.000Z"),
-        };
-      }
+      const staticMatch = STATIC_PROJECTS.find((p) => p.slug === slug);
+      if (staticMatch) return staticMatch;
       return null;
     }
 
@@ -108,24 +153,26 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
     };
   } catch (error) {
     console.error(`Failed to get project by slug '${slug}':`, error);
-    if (slug === KOPI_SANGKARA_PROJECT.slug) {
-      return {
-        id: "kopi-sangkara-pos-id",
-        ...KOPI_SANGKARA_PROJECT,
-        createdAt: new Date("2026-09-08T00:00:00.000Z"),
-        updatedAt: new Date("2026-09-17T00:00:00.000Z"),
-      };
-    }
+    const staticMatch = STATIC_PROJECTS.find((p) => p.slug === slug);
+    if (staticMatch) return staticMatch;
     return null;
   }
 }
 
 export async function getProjectById(id: string): Promise<Project | null> {
+  if (!process.env.DATABASE_URL) {
+    return STATIC_PROJECTS.find((p) => p.id === id) || null;
+  }
+
   try {
     const project = await db.project.findUnique({
       where: { id },
     });
-    if (!project) return null;
+    if (!project) {
+      const staticMatch = STATIC_PROJECTS.find((p) => p.id === id);
+      if (staticMatch) return staticMatch;
+      return null;
+    }
     return {
       id: project.id,
       title: project.title,
@@ -140,6 +187,8 @@ export async function getProjectById(id: string): Promise<Project | null> {
     };
   } catch (error) {
     console.error(`Failed to get project by id '${id}':`, error);
+    const staticMatch = STATIC_PROJECTS.find((p) => p.id === id);
+    if (staticMatch) return staticMatch;
     return null;
   }
 }
@@ -153,8 +202,14 @@ export async function getAdjacentProjects(currentSlug: string): Promise<{
     const currentIndex = projects.findIndex((p) => p.slug === currentSlug);
     if (currentIndex === -1) return { prev: null, next: null };
 
-    const prev = currentIndex > 0 ? { title: projects[currentIndex - 1].title, slug: projects[currentIndex - 1].slug } : null;
-    const next = currentIndex < projects.length - 1 ? { title: projects[currentIndex + 1].title, slug: projects[currentIndex + 1].slug } : null;
+    const prev =
+      currentIndex > 0
+        ? { title: projects[currentIndex - 1].title, slug: projects[currentIndex - 1].slug }
+        : null;
+    const next =
+      currentIndex < projects.length - 1
+        ? { title: projects[currentIndex + 1].title, slug: projects[currentIndex + 1].slug }
+        : null;
 
     return { prev, next };
   } catch (error) {
