@@ -16,7 +16,7 @@ Key Capabilities & Features
 • Dynamic Proxy & Self-Activation Portal: Unactivated cards guide merchants through a mobile-first onboarding flow (/r/[id]/activate) with Google Maps link resolution and PIN-protected destination URL updates.
 • Official Typography & Identity Harmony: Authentic Google Sans and Google Sans Text font stack, NFC wave indicators, and verified gold star rating assets.`,
   tech: ["Next.js", "TypeScript", "Tailwind CSS", "Prisma", "PostgreSQL", "Neon", "Playwright", "jsPDF", "html-to-image"],
-  link: "https://review-card-generator.vercel.app",
+  link: "https://review-card-generator-orcin.vercel.app",
   github: "https://github.com/LVNVoid/review-card-generator",
   image: "/projects/google-review-card-generator.png",
 };
