@@ -84,7 +84,7 @@ Built with Next.js 16 App Router following the Simple Scalable Architecture, the
         tech: ['Next.js 16', 'TypeScript', 'Tailwind CSS', 'Prisma', 'PostgreSQL', 'Neon', 'NextAuth', 'Zod', 'Tinyproxy', 'Vitest'],
         link: 'https://maganghub-bot-attendance.vercel.app',
         github: 'https://github.com/LVNVoid/maganghub-bot-attendance',
-        image: 'https://res.cloudinary.com/dmvludl4w/image/upload/v1789996439/projects/ugnimceokxpuvr3aqql0.png',
+        image: 'https://res.cloudinary.com/dmvludl4w/image/upload/v1789998667/projects/bybb9teoo7iyrzgcmio5.png',
       },
       create: {
         title: 'MagangHub Bot Attendance',
@@ -104,7 +104,7 @@ Built with Next.js 16 App Router following the Simple Scalable Architecture, the
         tech: ['Next.js 16', 'TypeScript', 'Tailwind CSS', 'Prisma', 'PostgreSQL', 'Neon', 'NextAuth', 'Zod', 'Tinyproxy', 'Vitest'],
         link: 'https://maganghub-bot-attendance.vercel.app',
         github: 'https://github.com/LVNVoid/maganghub-bot-attendance',
-        image: 'https://res.cloudinary.com/dmvludl4w/image/upload/v1789996439/projects/ugnimceokxpuvr3aqql0.png',
+        image: 'https://res.cloudinary.com/dmvludl4w/image/upload/v1789998667/projects/bybb9teoo7iyrzgcmio5.png',
       },
     })
     console.log(`Seeded Project: ${maganghubBot.title}`)
