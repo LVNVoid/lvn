@@ -22,6 +22,7 @@ import {
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import ReactMarkdown from "react-markdown";
 import type { Project } from "@/schemas/project-schema";
 import {
   getProjectHighlights,
@@ -204,9 +205,77 @@ export default function ProjectDetailClient({
                 Overview &amp; Architecture
               </h2>
             </div>
-            <p className="text-base sm:text-lg leading-[1.75] text-muted-foreground whitespace-pre-wrap font-normal">
-              {project.description}
-            </p>
+            <div className="max-w-none text-muted-foreground">
+              <ReactMarkdown
+                components={{
+                  h1: ({ children }) => (
+                    <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-foreground mt-8 mb-3">
+                      {children}
+                    </h3>
+                  ),
+                  h2: ({ children }) => (
+                    <h3 className="text-lg sm:text-xl font-bold tracking-tight text-foreground mt-6 mb-3 flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-teal-400 inline-block" />
+                      {children}
+                    </h3>
+                  ),
+                  h3: ({ children }) => (
+                    <h4 className="text-base sm:text-lg font-semibold text-foreground mt-6 mb-2 flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-teal-500 inline-block" />
+                      {children}
+                    </h4>
+                  ),
+                  p: ({ children }) => (
+                    <p className="text-base sm:text-lg leading-[1.8] text-muted-foreground font-normal mb-4">
+                      {children}
+                    </p>
+                  ),
+                  ul: ({ children }) => (
+                    <ul className="space-y-2.5 my-4 text-base sm:text-lg text-muted-foreground">
+                      {children}
+                    </ul>
+                  ),
+                  ol: ({ children }) => (
+                    <ol className="list-decimal space-y-2.5 my-4 pl-5 text-base sm:text-lg text-muted-foreground">
+                      {children}
+                    </ol>
+                  ),
+                  li: ({ children }) => (
+                    <li className="flex items-start gap-2.5 leading-relaxed">
+                      <span className="text-teal-400 select-none mt-1 text-sm font-bold">•</span>
+                      <span className="flex-1">{children}</span>
+                    </li>
+                  ),
+                  strong: ({ children }) => (
+                    <strong className="font-semibold text-foreground">{children}</strong>
+                  ),
+                  code: ({ children }) => (
+                    <code className="rounded bg-muted px-1.5 py-0.5 font-mono text-xs text-teal-400 border border-border/50">
+                      {children}
+                    </code>
+                  ),
+                  a: ({ href, children }) => (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-teal-400 underline hover:text-teal-300 transition-colors"
+                    >
+                      {children}
+                    </a>
+                  ),
+                  blockquote: ({ children }) => (
+                    <blockquote className="border-l-2 border-teal-500/50 pl-4 italic text-muted-foreground my-4">
+                      {children}
+                    </blockquote>
+                  ),
+                }}
+              >
+                {project.description
+                  .replace(/^[•\u2022]\s*/gm, "- ")
+                  .replace(/^(Architectural Overview|Key Capabilities & Features|System Architecture|Core Features|Security & Compliance)/gm, "### $1")}
+              </ReactMarkdown>
+            </div>
           </div>
 
           {/* Architectural Pillars */}
