@@ -49,6 +49,24 @@ function HighlightIcon({ type }: { type: HighlightIconType }) {
   }
 }
 
+function formatProjectMarkdown(text: string): string {
+  if (!text) return "";
+  let s = text;
+  // Separate sections even if attached to previous word without newlines
+  s = s.replace(/([.!?])\s*(?:###\s*)?(Architectural Overview|System Architecture|Overview & Architecture)/gi, "$1\n\n### $2\n\n");
+  s = s.replace(/(Architectural Overview|System Architecture|Overview & Architecture)\s*(Built|Developed|Designed|Created)/gi, "### $1\n\n$2");
+  s = s.replace(/([.!?])\s*(?:###\s*)?(Key Capabilities & Features|Core Features|Key Features)/gi, "$1\n\n### $2\n\n");
+  s = s.replace(/(Key Capabilities & Features|Core Features|Key Features)\s*([•\u2022\-])/gi, "### $1\n\n$2");
+  // Convert bullets to markdown list
+  s = s.replace(/[•\u2022]\s*/g, "\n\n- ");
+  // Bold the feature title if not already bolded
+  s = s.replace(/(\n\n-\s+)(?!\*\*)([^:\n*]+):/g, "$1**$2:**");
+  // Clean up duplicate headers or excessive newlines
+  s = s.replace(/###\s*###\s*/g, "### ");
+  s = s.replace(/\n{3,}/g, "\n\n");
+  return s.trim();
+}
+
 interface ProjectDetailClientProps {
   project: Project;
   adjacent?: {
@@ -271,9 +289,7 @@ export default function ProjectDetailClient({
                   ),
                 }}
               >
-                {project.description
-                  .replace(/^[•\u2022]\s*/gm, "- ")
-                  .replace(/^(Architectural Overview|Key Capabilities & Features|System Architecture|Core Features|Security & Compliance)/gm, "### $1")}
+                {formatProjectMarkdown(project.description)}
               </ReactMarkdown>
             </div>
           </div>
